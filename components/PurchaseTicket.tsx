@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 // import { createStripeCheckoutSession } from "@/app/actions/createStripeCheckoutSession";
@@ -28,6 +29,7 @@ export default function PurchaseTicket({ eventId }: { eventId: Id<"events"> }) {
   });
 
   const [timeRemaining, setTimeRemaining] = useState("");
+  // eslint@typescript-eslint/no-unused-vars
   const [isLoading, setIsLoading] = useState(false);
 
   const offerExpiresAt = queuePosition?.offerExpiresAt ?? 0;

@@ -3,6 +3,7 @@ import Header from "@/components/Header";
 import SynUserWithConvex from "@/components/SyncUserWithConvex";
 import { ClerkProvider } from "@clerk/nextjs";
 import { Geist, Geist_Mono } from "next/font/google";
+import { Suspense } from "react";
 import { Toaster } from "sonner";
 import "./globals.css";
 
@@ -34,10 +35,12 @@ export default function RootLayout({
       >
         <ConvexClientProvider>
           <ClerkProvider>
-            <Header />
-            <SynUserWithConvex />
-            {children}
-            <Toaster />
+            <Suspense>
+              <Header />
+              <SynUserWithConvex />
+              {children}
+              <Toaster />
+            </Suspense>
           </ClerkProvider>
         </ConvexClientProvider>
       </body>
