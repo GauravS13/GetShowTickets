@@ -6,7 +6,6 @@ import { Ticket } from "lucide-react";
 import EventCard from "./EventCard";
 
 // Shadcn UI components
-import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Spinner } from "./ui/spinner";
 
@@ -32,28 +31,22 @@ export default function EventList() {
     .sort((a, b) => b.eventDate - a.eventDate);
 
   return (
-    <div className="max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:px-8">
-      {/* Animated Hero Section */}
-      <div className="text-center mb-12 animate-slide-up">
-        <h1 className="text-display text-gradient-primary mb-6">
-          Discover Events
-        </h1>
-        <p className="text-hero text-muted-foreground max-w-2xl mx-auto">
-          Find and book tickets for the most exciting events. Experience the energy of live entertainment.
-        </p>
-        <div className="mt-8 flex justify-center">
-          <div className="w-24 h-1 bg-gradient-entertainment rounded-full animate-pulse"></div>
-        </div>
-      </div>
+    <div className="max-w-7xl mx-auto">
 
       {/* Tabs for Upcoming and Past Events */}
       <Tabs defaultValue="upcoming" className="w-full">
         <div className="flex justify-center mb-8">
-          <TabsList className="grid grid-cols-2 w-fit">
-            <TabsTrigger value="upcoming" className="capitalize cursor-pointer">
+          <TabsList className="grid grid-cols-2 w-fit glass-effect-enhanced">
+            <TabsTrigger 
+              value="upcoming" 
+              className="capitalize cursor-pointer focus-visible-glow"
+            >
               Upcoming Events ({upcomingEvents.length})
             </TabsTrigger>
-            <TabsTrigger value="past" className="capitalize cursor-pointer">
+            <TabsTrigger 
+              value="past" 
+              className="capitalize cursor-pointer focus-visible-glow"
+            >
               Past Events ({pastEvents.length})
             </TabsTrigger>
           </TabsList>
@@ -63,21 +56,13 @@ export default function EventList() {
         <TabsContent value="upcoming">
           {upcomingEvents.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-              {upcomingEvents.map((event, index) => (
-                <div 
-                  key={event._id} 
-                  className="animate-scale-in"
-                  style={{ animationDelay: `${index * 0.1}s` }}
-                >
-                  <EventCard eventId={event._id} />
-                </div>
+              {upcomingEvents.map((event) => (
+                <EventCard key={event._id} eventId={event._id} />
               ))}
             </div>
           ) : (
-            <div className="glass-effect rounded-2xl p-16 text-center animate-scale-in">
-              <div className="animate-float">
-                <Ticket className="w-16 h-16 text-muted-foreground mx-auto mb-6" />
-              </div>
+            <div className="glass-effect-enhanced rounded-2xl p-16 text-center">
+              <Ticket className="w-16 h-16 text-muted-foreground mx-auto mb-6" />
               <h3 className="text-xl font-semibold text-foreground mb-2">
                 No upcoming events
               </h3>
@@ -90,21 +75,13 @@ export default function EventList() {
         <TabsContent value="past">
           {pastEvents.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-              {pastEvents.map((event, index) => (
-                <div 
-                  key={event._id} 
-                  className="animate-scale-in"
-                  style={{ animationDelay: `${index * 0.1}s` }}
-                >
-                  <EventCard eventId={event._id} />
-                </div>
+              {pastEvents.map((event) => (
+                <EventCard key={event._id} eventId={event._id} />
               ))}
             </div>
           ) : (
-            <div className="glass-effect rounded-2xl p-16 text-center animate-scale-in">
-              <div className="animate-float">
-                <Ticket className="w-16 h-16 text-muted-foreground mx-auto mb-6" />
-              </div>
+            <div className="glass-effect-enhanced rounded-2xl p-16 text-center">
+              <Ticket className="w-16 h-16 text-muted-foreground mx-auto mb-6" />
               <h3 className="text-xl font-semibold text-foreground mb-2">
                 No past events
               </h3>
@@ -115,9 +92,6 @@ export default function EventList() {
           )}
         </TabsContent>
       </Tabs>
-
-      {/* Optional Separator if needed */}
-      <Separator className="mt-12" />
     </div>
   );
 }

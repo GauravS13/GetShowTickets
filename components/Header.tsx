@@ -1,17 +1,20 @@
 "use client";
 
-import logo from "@/images/logo.png";
 import { cn } from "@/lib/utils";
+import logo from "@/public/logo.svg";
 import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
-import { Menu, X } from "lucide-react";
+import { AnimatePresence, motion } from "framer-motion";
+import { Calendar, Gamepad2, Menu, Music, Theater, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import LocationSelector from "./LocationSelector";
 import SearchBar from "./SearchBar";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [selectedCity, setSelectedCity] = useState("All Cities");
 
   // Handle scroll effect for header
   useEffect(() => {
@@ -23,67 +26,94 @@ export default function Header() {
   }, []);
 
   return (
-    <header
+    <motion.header
+      initial={{ y: -50, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.4, ease: "easeOut" }}
       className={cn(
-        "sticky top-0 z-50 w-full transition-all duration-500",
+        "sticky top-0 z-50 w-full transition-all duration-300",
         scrolled
-          ? "glass-effect shadow-lg border-b border-primary/20"
-          : "bg-background/95 backdrop-blur-sm border-b border-border/50"
+          ? "bg-background/95 backdrop-blur-sm border-b border-border/50"
+          : "bg-background/90 backdrop-blur-sm border-b border-border/30"
       )}
     >
-      <div className="container mx-auto px-4 py-3">
+      <div className="container mx-auto px-4 py-2">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <Link href="/" className="relative z-10">
-            <Image
-              src={logo} // Update path to your logo
-              alt="Logo"
-              width={100}
-              height={40}
-              className="w-24 md:w-28 h-auto object-contain"
-              priority
-            />
-          </Link>
+          <div className="flex items-center">
+            <Link href="/" className="block">
+              <Image
+                src={logo}
+                alt="Get Show Tickets Logo"
+                width={120}
+                height={48}
+                className="w-30 h-auto object-contain"
+                priority
+                quality={100}
+              />
+            </Link>
+          </div>
 
-          {/* Desktop Navigation */}
+          {/* Location Selector - Desktop */}
+          <div className="hidden lg:block">
+            <LocationSelector 
+              selectedCity={selectedCity}
+              onCityChange={setSelectedCity}
+            />
+          </div>
+
+          {/* Desktop Search */}
           <div className="hidden lg:flex lg:flex-1 justify-center px-6">
-            <div className="w-full max-w-2xl">
+            <div className="w-full max-w-xl">
               <SearchBar />
             </div>
           </div>
 
+          {/* Category Navigation - Desktop */}
+          <div className="hidden xl:flex items-center gap-1">
+            <Link href="/category/comedy" className="px-3 py-1.5 rounded-full text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors duration-200">
+              Comedy
+            </Link>
+            <Link href="/category/music" className="px-3 py-1.5 rounded-full text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors duration-200">
+              Music
+            </Link>
+            <Link href="/category/sports" className="px-3 py-1.5 rounded-full text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors duration-200">
+              Sports
+            </Link>
+            <Link href="/category/theater" className="px-3 py-1.5 rounded-full text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors duration-200">
+              Theater
+            </Link>
+          </div>
+
           {/* Desktop Auth Buttons */}
-          <div className="hidden lg:flex items-center gap-4">
+          <div className="hidden lg:flex items-center gap-3">
             <SignedIn>
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-3">
                 <Link href="/seller">
-                  <button className="bg-gradient-primary text-primary-foreground px-6 py-2.5 rounded-full text-sm font-semibold hover:shadow-glow hover:shadow-primary/25 transition-all duration-300 hover:scale-105 active:scale-95">
+                  <button className="bg-primary text-primary-foreground px-4 py-2 rounded-full text-sm font-medium hover:bg-primary/90 transition-colors duration-200 cursor-pointer">
                     Sell Tickets
                   </button>
                 </Link>
 
                 <Link href="/tickets">
-                  <button className="glass-effect text-foreground px-6 py-2.5 rounded-full text-sm font-semibold hover:bg-accent/10 hover:shadow-glow hover:shadow-primary/10 transition-all duration-300 hover:scale-105 active:scale-95">
+                  <button className="text-foreground px-4 py-2 rounded-full text-sm font-medium hover:bg-muted/50 transition-colors duration-200 cursor-pointer">
                     My Tickets
                   </button>
                 </Link>
 
-                <div className="ml-2">
-                  <UserButton
-                    appearance={{
-                      elements: {
-                        avatarBox:
-                          "h-10 w-10 rounded-full ring-2 ring-primary/20 hover:ring-primary/40 transition-all duration-300 hover:scale-105",
-                      },
-                    }}
-                  />
-                </div>
+                <UserButton
+                  appearance={{
+                    elements: {
+                      avatarBox: "h-8 w-8 rounded-full",
+                    },
+                  }}
+                />
               </div>
             </SignedIn>
 
             <SignedOut>
               <SignInButton mode="modal">
-                <button className="glass-effect text-foreground px-6 py-2.5 rounded-full text-sm font-semibold hover:bg-accent/10 hover:shadow-glow hover:shadow-primary/10 transition-all duration-300 hover:scale-105 active:scale-95">
+                <button className="text-foreground px-4 py-2 rounded-full text-sm font-medium hover:bg-muted/50 transition-colors duration-200 cursor-pointer">
                   Sign In
                 </button>
               </SignInButton>
@@ -96,7 +126,7 @@ export default function Header() {
               <UserButton
                 appearance={{
                   elements: {
-                    avatarBox: "h-9 w-9 rounded-full ring-2 ring-primary/20 hover:ring-primary/40 transition-all duration-300",
+                    avatarBox: "h-8 w-8 rounded-full",
                   },
                 }}
               />
@@ -104,73 +134,123 @@ export default function Header() {
 
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="p-2.5 rounded-full glass-effect text-foreground hover:bg-accent/10 hover:shadow-glow hover:shadow-primary/10 transition-all duration-300 hover:scale-105 active:scale-95"
+              className="p-2 rounded-full text-foreground hover:bg-muted/50 transition-colors duration-200 cursor-pointer"
               aria-label="Toggle menu"
             >
-              {isMenuOpen ? <X size={20} /> : <Menu size={20} />}
+              <AnimatePresence mode="wait">
+                {isMenuOpen ? (
+                  <motion.div
+                    key="close"
+                    initial={{ rotate: -90, opacity: 0 }}
+                    animate={{ rotate: 0, opacity: 1 }}
+                    exit={{ rotate: 90, opacity: 0 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <X size={20} />
+                  </motion.div>
+                ) : (
+                  <motion.div
+                    key="menu"
+                    initial={{ rotate: 90, opacity: 0 }}
+                    animate={{ rotate: 0, opacity: 1 }}
+                    exit={{ rotate: -90, opacity: 0 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <Menu size={20} />
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </button>
           </div>
         </div>
 
-        {/* Mobile Search - Always visible below header */}
-        <div className="lg:hidden mt-3 mb-1">
+        {/* Mobile Search and Location - Always visible below header */}
+        <div className="lg:hidden mt-2 space-y-2">
           <SearchBar />
+          <LocationSelector 
+            selectedCity={selectedCity}
+            onCityChange={setSelectedCity}
+          />
         </div>
       </div>
 
       {/* Mobile Menu */}
-      {isMenuOpen && (
-        <div className="lg:hidden absolute top-full left-0 right-0 glass-effect border-b border-primary/20 shadow-lg animate-slide-up">
-          <div className="container mx-auto px-4 py-6 flex flex-col gap-4">
-            <SignedIn>
-              <div className="grid grid-cols-2 gap-4">
-                <Link href="/seller" className="col-span-1">
-                  <button className="w-full bg-gradient-primary text-primary-foreground px-4 py-3 rounded-xl text-sm font-semibold hover:shadow-glow hover:shadow-primary/25 transition-all duration-300 hover:scale-105 active:scale-95">
-                    Sell Tickets
-                  </button>
-                </Link>
+      <AnimatePresence>
+        {isMenuOpen && (
+          <motion.div 
+            className="lg:hidden absolute top-full left-0 right-0 bg-background/95 backdrop-blur-sm border-b border-border/50"
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.2, ease: "easeOut" }}
+          >
+            <div className="container mx-auto px-4 py-4 flex flex-col gap-4">
+              <SignedIn>
+                <div className="grid grid-cols-2 gap-3">
+                  <Link href="/seller">
+                    <button className="w-full bg-primary text-primary-foreground px-4 py-2 rounded-full text-sm font-medium hover:bg-primary/90 transition-colors duration-200 cursor-pointer">
+                      Sell Tickets
+                    </button>
+                  </Link>
 
-                <Link href="/tickets" className="col-span-1">
-                  <button className="w-full glass-effect text-foreground px-4 py-3 rounded-xl text-sm font-semibold hover:bg-accent/10 hover:shadow-glow hover:shadow-primary/10 transition-all duration-300 hover:scale-105 active:scale-95">
-                    My Tickets
+                  <Link href="/tickets">
+                    <button className="w-full text-foreground px-4 py-2 rounded-full text-sm font-medium hover:bg-muted/50 transition-colors duration-200 cursor-pointer">
+                      My Tickets
+                    </button>
+                  </Link>
+                </div>
+              </SignedIn>
+
+              <SignedOut>
+                <SignInButton mode="modal">
+                  <button className="w-full bg-primary text-primary-foreground px-4 py-2 rounded-full text-sm font-medium hover:bg-primary/90 transition-colors duration-200 cursor-pointer">
+                    Sign In
                   </button>
-                </Link>
+                </SignInButton>
+              </SignedOut>
+
+              {/* Category Navigation - Mobile */}
+              <div className="pt-3 border-t border-border/50">
+                <h3 className="text-sm font-medium text-foreground mb-2">Categories</h3>
+                <nav className="grid grid-cols-2 gap-2">
+                  {[
+                    { href: "/category/comedy", label: "Comedy", icon: Calendar },
+                    { href: "/category/music", label: "Music", icon: Music },
+                    { href: "/category/sports", label: "Sports", icon: Gamepad2 },
+                    { href: "/category/theater", label: "Theater", icon: Theater }
+                  ].map((item) => (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      className="flex items-center gap-2 p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors duration-200"
+                    >
+                      <item.icon className="w-4 h-4" />
+                      <span className="text-sm font-medium">{item.label}</span>
+                    </Link>
+                  ))}
+                </nav>
               </div>
-            </SignedIn>
 
-            <SignedOut>
-              <SignInButton mode="modal">
-                <button className="w-full bg-gradient-primary text-primary-foreground px-4 py-3 rounded-xl text-sm font-semibold hover:shadow-glow hover:shadow-primary/25 transition-all duration-300 hover:scale-105 active:scale-95">
-                  Sign In
-                </button>
-              </SignInButton>
-            </SignedOut>
-
-            <div className="pt-4 border-t border-border/50 mt-2">
-              <nav className="flex flex-col gap-3">
-                <Link
-                  href="/events"
-                  className="text-muted-foreground hover:text-primary py-2 transition-colors duration-300 hover:translate-x-1"
-                >
-                  All Events
-                </Link>
-                <Link
-                  href="/categories"
-                  className="text-muted-foreground hover:text-primary py-2 transition-colors duration-300 hover:translate-x-1"
-                >
-                  Categories
-                </Link>
-                <Link
-                  href="/help"
-                  className="text-muted-foreground hover:text-primary py-2 transition-colors duration-300 hover:translate-x-1"
-                >
-                  Help & Support
-                </Link>
-              </nav>
+              <div className="pt-3 border-t border-border/50">
+                <nav className="flex flex-col gap-2">
+                  {[
+                    { href: "/events", label: "All Events" },
+                    { href: "/help", label: "Help & Support" }
+                  ].map((item) => (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      className="text-muted-foreground hover:text-foreground py-1 transition-colors duration-200"
+                    >
+                      {item.label}
+                    </Link>
+                  ))}
+                </nav>
+              </div>
             </div>
-          </div>
-        </div>
-      )}
-    </header>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.header>
   );
 }

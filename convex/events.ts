@@ -33,20 +33,34 @@ export const create = mutation({
     name: v.string(),
     description: v.string(),
     location: v.string(),
+    city: v.string(),
+    category: v.string(),
     eventDate: v.number(), // Store as timestamp
     price: v.number(),
     totalTickets: v.number(),
     userId: v.string(),
+    isFeatured: v.optional(v.boolean()),
+    tags: v.optional(v.array(v.string())),
+    language: v.optional(v.string()),
+    duration: v.optional(v.string()),
+    ageRestriction: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
     const eventId = await ctx.db.insert("events", {
       name: args.name,
       description: args.description,
       location: args.location,
+      city: args.city,
+      category: args.category,
       eventDate: args.eventDate,
       price: args.price,
       totalTickets: args.totalTickets,
       userId: args.userId,
+      isFeatured: args.isFeatured || false,
+      tags: args.tags || [],
+      language: args.language,
+      duration: args.duration,
+      ageRestriction: args.ageRestriction,
     });
     return eventId;
   },
@@ -461,6 +475,9 @@ export const updateEvent = mutation({
     eventDate: v.number(),
     price: v.number(),
     totalTickets: v.number(),
+    language: v.optional(v.string()),
+    duration: v.optional(v.string()),
+    ageRestriction: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
     const { eventId, ...updates } = args;
@@ -526,5 +543,141 @@ export const cancelEvent = mutation({
     }
 
     return { success: true };
+  },
+});
+
+// New queries for district.in layout
+
+export const getByCategory = query({
+  args: { category: v.string() },
+  handler: async (ctx, { category }) => {
+    return await ctx.db
+      .query("events")
+      .filter((q) => q.eq(q.field("is_cancelled"), undefined))
+      .collect()
+      .then(events => events.filter(event => event.category === category));
+  },
+});
+
+export const getByLocation = query({
+  args: { city: v.string() },
+  handler: async (ctx, { city }) => {
+    return await ctx.db
+      .query("events")
+      .filter((q) => q.eq(q.field("is_cancelled"), undefined))
+      .collect()
+      .then(events => events.filter(event => event.city === city));
+  },
+});
+
+export const getFeaturedEvents = query({
+  args: {},
+  handler: async (ctx) => {
+    return await ctx.db
+      .query("events")
+      .filter((q) => q.eq(q.field("is_cancelled"), undefined))
+      .collect()
+      .then(events => events.filter(event => event.isFeatured === true));
+  },
+});
+
+export const getCategoriesWithCount = query({
+  args: {},
+  handler: async (ctx) => {
+    const events = await ctx.db
+      .query("events")
+      .filter((q) => q.eq(q.field("is_cancelled"), undefined))
+      .collect();
+
+    const categoryCounts: Record<string, number> = {};
+    events.forEach((event) => {
+      if (event.category) {
+        categoryCounts[event.category] = (categoryCounts[event.category] || 0) + 1;
+      }
+    });
+
+    return Object.entries(categoryCounts).map(([category, count]) => ({
+      category,
+      count,
+    }));
+  },
+});
+
+export const getAvailableCities = query({
+  args: {},
+  handler: async (ctx) => {
+    const events = await ctx.db
+      .query("events")
+      .filter((q) => q.eq(q.field("is_cancelled"), undefined))
+      .collect();
+
+    const cityCounts: Record<string, number> = {};
+    events.forEach((event) => {
+      if (event.city) {
+        cityCounts[event.city] = (cityCounts[event.city] || 0) + 1;
+      }
+    });
+
+    return Object.entries(cityCounts).map(([city, count]) => ({
+      city,
+      count,
+    }));
+  },
+});
+
+export const getByCategoryAndCity = query({
+  args: { category: v.string(), city: v.string() },
+  handler: async (ctx, { category, city }) => {
+    return await ctx.db
+      .query("events")
+      .filter((q) => q.eq(q.field("is_cancelled"), undefined))
+      .collect()
+      .then(events => events.filter(event => event.category === category && event.city === city));
+  },
+});
+
+export const searchAdvanced = query({
+  args: { 
+    searchTerm: v.string(),
+    category: v.optional(v.string()),
+    city: v.optional(v.string()),
+    minPrice: v.optional(v.number()),
+    maxPrice: v.optional(v.number()),
+    startDate: v.optional(v.number()),
+    endDate: v.optional(v.number()),
+  },
+  handler: async (ctx, { searchTerm, category, city, minPrice, maxPrice, startDate, endDate }) => {
+    const events = await ctx.db
+      .query("events")
+      .filter((q) => q.eq(q.field("is_cancelled"), undefined))
+      .collect();
+
+    return events.filter((event) => {
+      // Text search
+      const searchTermLower = searchTerm.toLowerCase();
+      const matchesText = 
+        event.name.toLowerCase().includes(searchTermLower) ||
+        event.description.toLowerCase().includes(searchTermLower) ||
+        event.location.toLowerCase().includes(searchTermLower) ||
+        (event.city && event.city.toLowerCase().includes(searchTermLower));
+
+      // Category filter
+      const matchesCategory = !category || event.category === category;
+
+      // City filter
+      const matchesCity = !city || event.city === city;
+
+      // Price filter
+      const matchesPrice = 
+        (!minPrice || event.price >= minPrice) &&
+        (!maxPrice || event.price <= maxPrice);
+
+      // Date filter
+      const matchesDate = 
+        (!startDate || event.eventDate >= startDate) &&
+        (!endDate || event.eventDate <= endDate);
+
+      return matchesText && matchesCategory && matchesCity && matchesPrice && matchesDate;
+    });
   },
 });

@@ -5,8 +5,19 @@
     "price": 499.99,
     "totalTickets": 100,
     "location": "MetLife Stadium, New Jersey",
+    "city": "New York",
+    "category": "music",
     "eventDate": 1723845600000,
-    "userId": "user_2bFMHkGxZPWVVyJ5QEJQxfsCkxB"
+    "userId": "user_2bFMHkGxZPWVVyJ5QEJQxfsCkxB",
+    "isFeatured": true,
+    "tags": [
+      "pop",
+      "concert",
+      "stadium"
+    ],
+    "language": "English",
+    "duration": "2.5 Hours",
+    "ageRestriction": "All Ages"
   },
   {
     "name": "NBA Finals 2024 - Game 1",
@@ -14,8 +25,19 @@
     "price": 899.99,
     "totalTickets": 50,
     "location": "Madison Square Garden, New York",
-    "eventDate": 1717891200000,
-    "userId": "user_2bFMHkGxZPWVVyJ5QEJQxfsCkxB"
+    "city": "New York",
+    "category": "sports",
+    "eventDate": 1762214400000,
+    "userId": "user_2bFMHkGxZPWVVyJ5QEJQxfsCkxB",
+    "isFeatured": true,
+    "tags": [
+      "basketball",
+      "finals",
+      "arena"
+    ],
+    "language": "English",
+    "duration": "2.5 Hours",
+    "ageRestriction": "All Ages"
   },
   {
     "name": "Hamilton - Broadway",
@@ -23,35 +45,79 @@
     "price": 299.99,
     "totalTickets": 75,
     "location": "Richard Rodgers Theatre, New York",
-    "eventDate": 1721788200000,
-    "userId": "user_2dOPKmMyZRXXazL7SGLSzhsEmzD"
+    "city": "New York",
+    "category": "theater",
+    "eventDate": 1762214400000,
+    "userId": "user_2dOPKmMyZRXXazL7SGLSzhsEmzD",
+    "isFeatured": false,
+    "tags": [
+      "musical",
+      "broadway",
+      "theater"
+    ],
+    "language": "English",
+    "duration": "2.5 Hours",
+    "ageRestriction": "12 yrs & above"
   },
   {
     "name": "Coldplay World Tour",
     "description": "Join Coldplay for an unforgettable night of music!",
-    "price": 150.0,
+    "price": 150,
     "totalTickets": 200,
     "location": "Wembley Stadium, London",
-    "eventDate": 1726012800000,
-    "userId": "user_2dOPKmMyZRXXazL7SGLSzhsEmzD"
+    "city": "London",
+    "category": "music",
+    "eventDate": 1762214400000,
+    "userId": "user_2dOPKmMyZRXXazL7SGLSzhsEmzD",
+    "isFeatured": true,
+    "tags": [
+      "rock",
+      "concert",
+      "stadium"
+    ],
+    "language": "English",
+    "duration": "2.5 Hours",
+    "ageRestriction": "All Ages"
   },
   {
     "name": "Comic Con 2024",
     "description": "The ultimate pop culture convention!",
-    "price": 85.0,
+    "price": 85,
     "totalTickets": 1000,
     "location": "Javits Center, New York",
-    "eventDate": 1728172800000,
-    "userId": "user_2dOPKmMyZRXXazL7SGLSzhsEmzD"
+    "city": "New York",
+    "category": "activities",
+    "eventDate": 1762214400000,
+    "userId": "user_2dOPKmMyZRXXazL7SGLSzhsEmzD",
+    "isFeatured": false,
+    "tags": [
+      "convention",
+      "comics",
+      "pop-culture"
+    ],
+    "language": "English",
+    "duration": "3 Hours",
+    "ageRestriction": "All Ages"
   },
   {
     "name": "Ed Sheeran Mathematics Tour",
     "description": "An intimate evening with Ed Sheeran performing his greatest hits",
-    "price": 125.0,
+    "price": 125,
     "totalTickets": 150,
     "location": "O2 Arena, London",
-    "eventDate": 1729382400000,
-    "userId": "user_2eRTLnPxYQWWbzM8THMTaisFnzE"
+    "city": "London",
+    "category": "music",
+    "eventDate": 1762214400000,
+    "userId": "user_2eRTLnPxYQWWbzM8THMTaisFnzE",
+    "isFeatured": false,
+    "tags": [
+      "pop",
+      "concert",
+      "arena"
+    ],
+    "language": "English",
+    "duration": "2.5 Hours",
+    "ageRestriction": "All Ages"
   },
   {
     "name": "Premier League: Arsenal vs Manchester United",
@@ -59,34 +125,1562 @@
     "price": 199.99,
     "totalTickets": 60,
     "location": "Emirates Stadium, London",
+    "city": "London",
+    "category": "sports",
     "eventDate": 1722393600000,
-    "userId": "user_2fQUMpNzXSVVczN9UINUbjsGozF"
+    "userId": "user_2fQUMpNzXSVVczN9UINUbjsGozF",
+    "isFeatured": true,
+    "tags": [
+      "football",
+      "premier-league",
+      "stadium"
+    ],
+    "language": "English",
+    "duration": "2.5 Hours",
+    "ageRestriction": "All Ages"
   },
   {
     "name": "Adele: Weekend with Adele",
     "description": "Adele's spectacular Las Vegas residency show",
-    "price": 450.0,
+    "price": 450,
     "totalTickets": 80,
     "location": "Caesars Palace, Las Vegas",
+    "city": "Las Vegas",
+    "category": "music",
     "eventDate": 1724985600000,
-    "userId": "user_2gPVNqOyYTWWdzO0VJOVcktHpzG"
+    "userId": "user_2gPVNqOyYTWWdzO0VJOVcktHpzG",
+    "isFeatured": true,
+    "tags": [
+      "pop",
+      "residency",
+      "casino"
+    ],
+    "language": "English",
+    "duration": "2.5 Hours",
+    "ageRestriction": "All Ages"
   },
   {
     "name": "Wimbledon 2024 - Men's Final",
     "description": "The culmination of the world's most prestigious tennis tournament",
-    "price": 750.0,
+    "price": 750,
     "totalTickets": 40,
     "location": "Centre Court, All England Club, London",
-    "eventDate": 1720578600000,
-    "userId": "user_2hQWOrPzZUXXezP1WKPWdluIqzH"
+    "city": "London",
+    "category": "sports",
+    "eventDate": 1762214400000,
+    "userId": "user_2hQWOrPzZUXXezP1WKPWdluIqzH",
+    "isFeatured": true,
+    "tags": [
+      "tennis",
+      "grand-slam",
+      "final"
+    ],
+    "language": "English",
+    "duration": "2.5 Hours",
+    "ageRestriction": "All Ages"
   },
   {
     "name": "Harry Potter and the Cursed Child",
     "description": "The eighth story in the Harry Potter series comes to life on stage",
-    "price": 175.0,
+    "price": 175,
     "totalTickets": 100,
     "location": "Palace Theatre, London",
+    "city": "London",
+    "category": "theater",
     "eventDate": 1727222400000,
-    "userId": "user_2iRXPsQAaVYYfAQ2XLQXemvJrzI"
+    "userId": "user_2iRXPsQAaVYYfAQ2XLQXemvJrzI",
+    "isFeatured": false,
+    "tags": [
+      "musical",
+      "west-end",
+      "fantasy"
+    ],
+    "language": "English",
+    "duration": "2.5 Hours",
+    "ageRestriction": "12 yrs & above"
+  },
+  {
+    "name": "Noida Comedy Show | Sec-18",
+    "description": "Laugh out loud with the best comedians in Noida!",
+    "price": 299,
+    "totalTickets": 80,
+    "location": "Comedy Club Sector 18 Noida",
+    "city": "Noida",
+    "category": "comedy",
+    "eventDate": 1723845600000,
+    "userId": "user_2jSXQtRBbWZZgbB3YMRYfnwKszJ",
+    "isFeatured": true,
+    "tags": [
+      "standup",
+      "comedy",
+      "weekend"
+    ],
+    "language": "Hindi, English",
+    "duration": "1.5 Hours",
+    "ageRestriction": "16 yrs & above"
+  },
+  {
+    "name": "The Late Night Comedy Show",
+    "description": "An adult-rated comedy show with the hottest comedians",
+    "price": 299,
+    "totalTickets": 60,
+    "location": "Guftagu Cafe, Gurugram",
+    "city": "Gurugram",
+    "category": "comedy",
+    "eventDate": 1723845600000,
+    "userId": "user_2kTYSrSCcXAAhcC4ZNSZgoxLtzK",
+    "isFeatured": false,
+    "tags": [
+      "standup",
+      "adult",
+      "night"
+    ],
+    "language": "Hindi, English",
+    "duration": "1.5 Hours",
+    "ageRestriction": "18 yrs & above"
+  },
+  {
+    "name": "Rajat Chauhan Live: Stand-up Comedy Show",
+    "description": "Experience the wit and humor of Rajat Chauhan live on stage",
+    "price": 499,
+    "totalTickets": 100,
+    "location": "Nojoto Creator Hub, Delhi/NCR",
+    "city": "Delhi",
+    "category": "comedy",
+    "eventDate": 1762214400000,
+    "userId": "user_2lUZTsTDdYBBidD5AOTAhpyMuzL",
+    "isFeatured": true,
+    "tags": [
+      "standup",
+      "live",
+      "creator"
+    ],
+    "language": "Hindi, English",
+    "duration": "1.5 Hours",
+    "ageRestriction": "16 yrs & above"
+  },
+  {
+    "name": "Delhi Comedy Nights @Hideout",
+    "description": "Weekly comedy nights featuring fresh talent and established comedians",
+    "price": 249,
+    "totalTickets": 120,
+    "location": "Hideout Studio, Delhi/NCR",
+    "city": "Delhi",
+    "category": "comedy",
+    "eventDate": 1723845600000,
+    "userId": "user_2mVUUtUEeZCCjeE6BPUBiqzNvzM",
+    "isFeatured": false,
+    "tags": [
+      "standup",
+      "weekly",
+      "studio"
+    ],
+    "language": "Hindi, English",
+    "duration": "1.5 Hours",
+    "ageRestriction": "16 yrs & above"
+  },
+  {
+    "name": "Crazy Comedy Nights - Live and Lively Standup Comedy",
+    "description": "High-energy comedy show with multiple performers",
+    "price": 199,
+    "totalTickets": 90,
+    "location": "Matchbox Pub & Grub, Delhi/NCR",
+    "city": "Delhi",
+    "category": "comedy",
+    "eventDate": 1762214400000,
+    "userId": "user_2nWVVuVFfADDkfF7CQVCjrzOwzN",
+    "isFeatured": false,
+    "tags": [
+      "standup",
+      "multiple",
+      "pub"
+    ],
+    "language": "Hindi, English",
+    "duration": "1.5 Hours",
+    "ageRestriction": "16 yrs & above"
+  },
+  {
+    "name": "Gen WHY: A Millennial Spiral by Swati Sachdeva",
+    "description": "A unique comedy show exploring millennial experiences and struggles",
+    "price": 599,
+    "totalTickets": 70,
+    "location": "IndiOwl - Platform 13, Delhi/NCR",
+    "city": "Delhi",
+    "category": "comedy",
+    "eventDate": 1723845600000,
+    "userId": "user_2oXWVvWGgBEElgG8DRWDksAPzO",
+    "isFeatured": true,
+    "tags": [
+      "standup",
+      "millennial",
+      "unique"
+    ],
+    "language": "Hindi, English",
+    "duration": "1.5 Hours",
+    "ageRestriction": "16 yrs & above"
+  },
+  {
+    "name": "All Star Lineup Comedy Show",
+    "description": "The best comedians come together for one unforgettable night",
+    "price": 299,
+    "totalTickets": 110,
+    "location": "The Joke Theatre, Gurugram",
+    "city": "Gurugram",
+    "category": "comedy",
+    "eventDate": 1762214400000,
+    "userId": "user_2pYWWwXHhCFFmhH9ESXEltsBQzP",
+    "isFeatured": false,
+    "tags": [
+      "standup",
+      "all-star",
+      "theater"
+    ],
+    "language": "Hindi, English",
+    "duration": "1.5 Hours",
+    "ageRestriction": "16 yrs & above"
+  },
+  {
+    "name": "Comedy, Poetry, Storytelling & Music - Saturday Open Mic",
+    "description": "A creative open mic night featuring comedy, poetry, and music",
+    "price": 149,
+    "totalTickets": 50,
+    "location": "Unmukt Studio, Delhi/NCR",
+    "city": "Delhi",
+    "category": "comedy",
+    "eventDate": 1762214400000,
+    "userId": "user_2qZXWxYIiDGGniI0FTYFmutCRzQ",
+    "isFeatured": false,
+    "tags": [
+      "open-mic",
+      "poetry",
+      "music"
+    ],
+    "language": "Hindi, English",
+    "duration": "1.5 Hours",
+    "ageRestriction": "16 yrs & above"
+  },
+  {
+    "name": "Noida Comedy Bar",
+    "description": "Regular comedy shows every weekend at Noida's premier comedy venue",
+    "price": 249,
+    "totalTickets": 85,
+    "location": "Hitchin Bistro, Noida",
+    "city": "Noida",
+    "category": "comedy",
+    "eventDate": 1762214400000,
+    "userId": "user_2rAYWyZJjEHHojJ1GUZGnvDSUzR",
+    "isFeatured": false,
+    "tags": [
+      "standup",
+      "weekly",
+      "bistro"
+    ],
+    "language": "Hindi, English",
+    "duration": "1.5 Hours",
+    "ageRestriction": "16 yrs & above"
+  },
+  {
+    "name": "Standup Comedy Open Mic",
+    "description": "New talent showcase with established comedians as judges",
+    "price": 199,
+    "totalTickets": 65,
+    "location": "LIGHT ROOM, Delhi/NCR",
+    "city": "Delhi",
+    "category": "comedy",
+    "eventDate": 1762214400000,
+    "userId": "user_2sBZXzZkFIIpkK2HVZHovETVzS",
+    "isFeatured": false,
+    "tags": [
+      "open-mic",
+      "talent",
+      "judges"
+    ],
+    "language": "Hindi, English",
+    "duration": "1.5 Hours",
+    "ageRestriction": "16 yrs & above"
+  },
+  {
+    "name": "Arijit Singh Live Concert",
+    "description": "Experience the soulful voice of Arijit Singh in an intimate concert",
+    "price": 2500,
+    "totalTickets": 200,
+    "location": "Jawaharlal Nehru Stadium, Mumbai",
+    "city": "Mumbai",
+    "category": "music",
+    "eventDate": 1726012800000,
+    "userId": "user_2tCZXzZkFIIpkK2HVZHovETVzT",
+    "isFeatured": true,
+    "tags": [
+      "bollywood",
+      "concert",
+      "stadium"
+    ],
+    "language": "Hindi, English",
+    "duration": "3 Hours",
+    "ageRestriction": "All Ages"
+  },
+  {
+    "name": "IPL 2024 Final - Mumbai Indians vs Chennai Super Kings",
+    "description": "Witness the ultimate showdown in the IPL 2024 final",
+    "price": 3500,
+    "totalTickets": 150,
+    "location": "Wankhede Stadium, Mumbai",
+    "city": "Mumbai",
+    "category": "sports",
+    "eventDate": 1728172800000,
+    "userId": "user_2uDZXzZkFIIpkK2HVZHovETVzU",
+    "isFeatured": true,
+    "tags": [
+      "cricket",
+      "ipl",
+      "final"
+    ],
+    "language": "Hindi, English",
+    "duration": "4 Hours",
+    "ageRestriction": "All Ages"
+  },
+  {
+    "name": "Bangalore Tech Summit 2024",
+    "description": "India's premier technology conference featuring industry leaders",
+    "price": 1500,
+    "totalTickets": 500,
+    "location": "Bangalore Palace, Bangalore",
+    "city": "Bangalore",
+    "category": "activities",
+    "eventDate": 1729382400000,
+    "userId": "user_2vEZXzZkFIIpkK2HVZHovETVzV",
+    "isFeatured": true,
+    "tags": [
+      "tech",
+      "conference",
+      "innovation"
+    ],
+    "language": "Hindi, English",
+    "duration": "3 Hours",
+    "ageRestriction": "All Ages"
+  },
+  {
+    "name": "Zakir Khan Live - Haq Se Single",
+    "description": "Comedy show with Zakir Khan's signature storytelling style",
+    "price": 800,
+    "totalTickets": 300,
+    "location": "Chowdiah Memorial Hall, Bangalore",
+    "city": "Bangalore",
+    "category": "comedy",
+    "eventDate": 1762214400000,
+    "userId": "user_2wFZXzZkFIIpkK2HVZHovETVzW",
+    "isFeatured": true,
+    "tags": [
+      "standup",
+      "storytelling",
+      "comedy"
+    ],
+    "language": "Hindi, English",
+    "duration": "1.5 Hours",
+    "ageRestriction": "16 yrs & above"
+  },
+  {
+    "name": "Bharatanatyam Recital by Alarmel Valli",
+    "description": "Classical dance performance by the legendary Alarmel Valli",
+    "price": 1200,
+    "totalTickets": 100,
+    "location": "Kalakshetra Foundation, Chennai",
+    "city": "Chennai",
+    "category": "theater",
+    "eventDate": 1727222400000,
+    "userId": "user_2xGZXzZkFIIpkK2HVZHovETVzX",
+    "isFeatured": true,
+    "tags": [
+      "classical",
+      "dance",
+      "bharatanatyam"
+    ],
+    "language": "Hindi, English",
+    "duration": "2.5 Hours",
+    "ageRestriction": "12 yrs & above"
+  },
+  {
+    "name": "Chennai Super Kings vs Royal Challengers Bangalore",
+    "description": "Southern derby in the IPL 2024 season",
+    "price": 2000,
+    "totalTickets": 200,
+    "location": "M.A. Chidambaram Stadium, Chennai",
+    "city": "Chennai",
+    "category": "sports",
+    "eventDate": 1762214400000,
+    "userId": "user_2yHZXzZkFIIpkK2HVZHovETVzY",
+    "isFeatured": false,
+    "tags": [
+      "cricket",
+      "ipl",
+      "derby"
+    ],
+    "language": "Hindi, English",
+    "duration": "2.5 Hours",
+    "ageRestriction": "All Ages"
+  },
+  {
+    "name": "Hyderabad Food Festival 2024",
+    "description": "Celebrate the rich culinary heritage of Hyderabad",
+    "price": 500,
+    "totalTickets": 1000,
+    "location": "HITEC City, Hyderabad",
+    "city": "Hyderabad",
+    "category": "activities",
+    "eventDate": 1720578600000,
+    "userId": "user_2zIZXzZkFIIpkK2HVZHovETVzZ",
+    "isFeatured": false,
+    "tags": [
+      "food",
+      "festival",
+      "culture"
+    ],
+    "language": "Hindi, English",
+    "duration": "6 Hours",
+    "ageRestriction": "All Ages"
+  },
+  {
+    "name": "Sunidhi Chauhan Live in Concert",
+    "description": "Bollywood's playback queen performs her greatest hits",
+    "price": 1800,
+    "totalTickets": 250,
+    "location": "Ravindra Bharathi, Hyderabad",
+    "city": "Hyderabad",
+    "category": "music",
+    "eventDate": 1762214400000,
+    "userId": "user_2aJZXzZkFIIpkK2HVZHovETVzA",
+    "isFeatured": true,
+    "tags": [
+      "bollywood",
+      "playback",
+      "concert"
+    ],
+    "language": "Hindi, English",
+    "duration": "3 Hours",
+    "ageRestriction": "All Ages"
+  },
+  {
+    "name": "Kolkata Book Fair 2024",
+    "description": "Asia's largest book fair with authors, publishers, and literary events",
+    "price": 100,
+    "totalTickets": 5000,
+    "location": "Milan Mela Ground, Kolkata",
+    "city": "Kolkata",
+    "category": "activities",
+    "eventDate": 1762214400000,
+    "userId": "user_2bKZXzZkFIIpkK2HVZHovETVzB",
+    "isFeatured": true,
+    "tags": [
+      "books",
+      "literature",
+      "fair"
+    ],
+    "language": "Hindi, English",
+    "duration": "3 Hours",
+    "ageRestriction": "All Ages"
+  },
+  {
+    "name": "Mohun Bagan vs East Bengal Derby",
+    "description": "The biggest football rivalry in Indian football",
+    "price": 1500,
+    "totalTickets": 80,
+    "location": "Salt Lake Stadium, Kolkata",
+    "city": "Kolkata",
+    "category": "sports",
+    "eventDate": 1728172800000,
+    "userId": "user_2cLZXzZkFIIpkK2HVZHovETVzC",
+    "isFeatured": true,
+    "tags": [
+      "football",
+      "derby",
+      "rivalry"
+    ],
+    "language": "Hindi, English",
+    "duration": "2.5 Hours",
+    "ageRestriction": "All Ages"
+  },
+  {
+    "name": "Pune International Film Festival",
+    "description": "Screening of award-winning international and Indian films",
+    "price": 300,
+    "totalTickets": 400,
+    "location": "National Film Archive of India, Pune",
+    "city": "Pune",
+    "category": "activities",
+    "eventDate": 1729382400000,
+    "userId": "user_2dMZXzZkFIIpkK2HVZHovETVzD",
+    "isFeatured": false,
+    "tags": [
+      "film",
+      "festival",
+      "international"
+    ],
+    "language": "Hindi, English",
+    "duration": "6 Hours",
+    "ageRestriction": "All Ages"
+  },
+  {
+    "name": "Kumar Sanu Live Concert",
+    "description": "90s Bollywood legend performs his timeless hits",
+    "price": 1200,
+    "totalTickets": 300,
+    "location": "Shiv Chhatrapati Sports Complex, Pune",
+    "city": "Pune",
+    "category": "music",
+    "eventDate": 1724985600000,
+    "userId": "user_2eNZXzZkFIIpkK2HVZHovETVzE",
+    "isFeatured": false,
+    "tags": [
+      "bollywood",
+      "90s",
+      "concert"
+    ],
+    "language": "Hindi, English",
+    "duration": "3 Hours",
+    "ageRestriction": "All Ages"
+  },
+  {
+    "name": "Jaipur Literature Festival 2024",
+    "description": "The world's largest free literary festival",
+    "price": 0,
+    "totalTickets": 2000,
+    "location": "Diggi Palace, Jaipur",
+    "city": "Jaipur",
+    "category": "activities",
+    "eventDate": 1762214400000,
+    "userId": "user_2fOZXzZkFIIpkK2HVZHovETVzF",
+    "isFeatured": true,
+    "tags": [
+      "literature",
+      "free",
+      "festival"
+    ],
+    "language": "Hindi, English",
+    "duration": "6 Hours",
+    "ageRestriction": "All Ages"
+  },
+  {
+    "name": "Rajasthan Royals vs Delhi Capitals",
+    "description": "IPL match at the Pink City",
+    "price": 1800,
+    "totalTickets": 120,
+    "location": "Sawai Mansingh Stadium, Jaipur",
+    "city": "Jaipur",
+    "category": "sports",
+    "eventDate": 1722393600000,
+    "userId": "user_2gPZXzZkFIIpkK2HVZHovETVzG",
+    "isFeatured": false,
+    "tags": [
+      "cricket",
+      "ipl",
+      "rajasthan"
+    ],
+    "language": "Hindi, English",
+    "duration": "2.5 Hours",
+    "ageRestriction": "All Ages"
+  },
+  {
+    "name": "Ahmedabad Marathon 2024",
+    "description": "Annual marathon through the historic city of Ahmedabad",
+    "price": 800,
+    "totalTickets": 1000,
+    "location": "Sabarmati Riverfront, Ahmedabad",
+    "city": "Ahmedabad",
+    "category": "activities",
+    "eventDate": 1720578600000,
+    "userId": "user_2hQZXzZkFIIpkK2HVZHovETVzH",
+    "isFeatured": false,
+    "tags": [
+      "marathon",
+      "fitness",
+      "riverfront"
+    ],
+    "language": "Hindi, English",
+    "duration": "3 Hours",
+    "ageRestriction": "All Ages"
+  },
+  {
+    "name": "Gujarat Titans vs Mumbai Indians",
+    "description": "IPL clash at the Narendra Modi Stadium",
+    "price": 2500,
+    "totalTickets": 100,
+    "location": "Narendra Modi Stadium, Ahmedabad",
+    "city": "Ahmedabad",
+    "category": "sports",
+    "eventDate": 1723845600000,
+    "userId": "user_2iRZXzZkFIIpkK2HVZHovETVzI",
+    "isFeatured": true,
+    "tags": [
+      "cricket",
+      "ipl",
+      "gujarat"
+    ],
+    "language": "Hindi, English",
+    "duration": "2.5 Hours",
+    "ageRestriction": "All Ages"
+  },
+  {
+    "name": "Lucknow Mahotsav 2024",
+    "description": "Cultural festival celebrating the heritage of Lucknow",
+    "price": 200,
+    "totalTickets": 2000,
+    "location": "Buddha Park, Lucknow",
+    "city": "Lucknow",
+    "category": "activities",
+    "eventDate": 1726012800000,
+    "userId": "user_2jSZXzZkFIIpkK2HVZHovETVzJ",
+    "isFeatured": false,
+    "tags": [
+      "culture",
+      "heritage",
+      "festival"
+    ],
+    "language": "Hindi, English",
+    "duration": "3 Hours",
+    "ageRestriction": "All Ages"
+  },
+  {
+    "name": "Lucknow Super Giants vs Punjab Kings",
+    "description": "IPL match at the Ekana Cricket Stadium",
+    "price": 1500,
+    "totalTickets": 150,
+    "location": "Ekana Cricket Stadium, Lucknow",
+    "city": "Lucknow",
+    "category": "sports",
+    "eventDate": 1762214400000,
+    "userId": "user_2kTZXzZkFIIpkK2HVZHovETVzK",
+    "isFeatured": false,
+    "tags": [
+      "cricket",
+      "ipl",
+      "lucknow"
+    ],
+    "language": "Hindi, English",
+    "duration": "2.5 Hours",
+    "ageRestriction": "All Ages"
+  },
+  {
+    "name": "Chandigarh Rose Festival 2024",
+    "description": "Annual celebration of roses in the City Beautiful",
+    "price": 150,
+    "totalTickets": 1500,
+    "location": "Rose Garden, Chandigarh",
+    "city": "Chandigarh",
+    "category": "activities",
+    "eventDate": 1762214400000,
+    "userId": "user_2lUZXzZkFIIpkK2HVZHovETVzL",
+    "isFeatured": false,
+    "tags": [
+      "roses",
+      "garden",
+      "festival"
+    ],
+    "language": "Hindi, English",
+    "duration": "6 Hours",
+    "ageRestriction": "All Ages"
+  },
+  {
+    "name": "Punjab Kings vs Sunrisers Hyderabad",
+    "description": "IPL match at the PCA Stadium",
+    "price": 1200,
+    "totalTickets": 100,
+    "location": "PCA Stadium, Mohali",
+    "city": "Chandigarh",
+    "category": "sports",
+    "eventDate": 1724985600000,
+    "userId": "user_2mVZXzZkFIIpkK2HVZHovETVzM",
+    "isFeatured": false,
+    "tags": [
+      "cricket",
+      "ipl",
+      "punjab"
+    ],
+    "language": "Hindi, English",
+    "duration": "2.5 Hours",
+    "ageRestriction": "All Ages"
+  },
+  {
+    "name": "Indore Comedy Festival",
+    "description": "Weekend comedy festival featuring top comedians",
+    "price": 400,
+    "totalTickets": 500,
+    "location": "Rajwada Palace, Indore",
+    "city": "Indore",
+    "category": "comedy",
+    "eventDate": 1727222400000,
+    "userId": "user_2nWZXzZkFIIpkK2HVZHovETVzN",
+    "isFeatured": false,
+    "tags": [
+      "comedy",
+      "festival",
+      "weekend"
+    ],
+    "language": "Hindi, English",
+    "duration": "1.5 Hours",
+    "ageRestriction": "16 yrs & above"
+  },
+  {
+    "name": "Bhopal Heritage Walk",
+    "description": "Guided tour of Bhopal's historical monuments",
+    "price": 300,
+    "totalTickets": 50,
+    "location": "Taj-ul-Masajid, Bhopal",
+    "city": "Bhopal",
+    "category": "activities",
+    "eventDate": 1722393600000,
+    "userId": "user_2oXZXzZkFIIpkK2HVZHovETVzO",
+    "isFeatured": false,
+    "tags": [
+      "heritage",
+      "walk",
+      "history"
+    ],
+    "language": "Hindi, English",
+    "duration": "3 Hours",
+    "ageRestriction": "All Ages"
+  },
+  {
+    "name": "Kochi Muziris Biennale 2024",
+    "description": "Contemporary art exhibition featuring international artists",
+    "price": 500,
+    "totalTickets": 800,
+    "location": "Fort Kochi, Kochi",
+    "city": "Kochi",
+    "category": "activities",
+    "eventDate": 1720578600000,
+    "userId": "user_2pYZXzZkFIIpkK2HVZHovETVzP",
+    "isFeatured": true,
+    "tags": [
+      "art",
+      "biennale",
+      "contemporary"
+    ],
+    "language": "Hindi, English",
+    "duration": "3 Hours",
+    "ageRestriction": "All Ages"
+  },
+  {
+    "name": "Kerala Blasters vs Bengaluru FC",
+    "description": "ISL football match at the Jawaharlal Nehru Stadium",
+    "price": 800,
+    "totalTickets": 200,
+    "location": "Jawaharlal Nehru Stadium, Kochi",
+    "city": "Kochi",
+    "category": "sports",
+    "eventDate": 1723845600000,
+    "userId": "user_2qZZXzZkFIIpkK2HVZHovETVzQ",
+    "isFeatured": false,
+    "tags": [
+      "football",
+      "isl",
+      "kerala"
+    ],
+    "language": "Hindi, English",
+    "duration": "2.5 Hours",
+    "ageRestriction": "All Ages"
+  },
+  {
+    "name": "Coimbatore Tech Summit",
+    "description": "Technology conference focusing on manufacturing and innovation",
+    "price": 1000,
+    "totalTickets": 300,
+    "location": "Codissia Trade Fair Complex, Coimbatore",
+    "city": "Coimbatore",
+    "category": "activities",
+    "eventDate": 1726012800000,
+    "userId": "user_2rAZXzZkFIIpkK2HVZHovETVzR",
+    "isFeatured": false,
+    "tags": [
+      "tech",
+      "manufacturing",
+      "innovation"
+    ],
+    "language": "Hindi, English",
+    "duration": "3 Hours",
+    "ageRestriction": "All Ages"
+  },
+  {
+    "name": "Surat Diamond Exhibition 2024",
+    "description": "International diamond and jewelry exhibition",
+    "price": 200,
+    "totalTickets": 1000,
+    "location": "Surat International Exhibition Centre",
+    "city": "Surat",
+    "category": "activities",
+    "eventDate": 1762214400000,
+    "userId": "user_2sBZXzZkFIIpkK2HVZHovETVzS",
+    "isFeatured": false,
+    "tags": [
+      "diamond",
+      "jewelry",
+      "exhibition"
+    ],
+    "language": "Hindi, English",
+    "duration": "3 Hours",
+    "ageRestriction": "All Ages"
+  },
+  {
+    "name": "Biswa Kalyan Rath Live",
+    "description": "Stand-up comedy show with Biswa Kalyan Rath",
+    "price": 600,
+    "totalTickets": 400,
+    "location": "Phoenix MarketCity, Mumbai",
+    "city": "Mumbai",
+    "category": "comedy",
+    "eventDate": 1762214400000,
+    "userId": "user_2tCZXzZkFIIpkK2HVZHovETVzT",
+    "isFeatured": true,
+    "tags": [
+      "standup",
+      "comedy",
+      "mumbai"
+    ],
+    "language": "Hindi, English",
+    "duration": "1.5 Hours",
+    "ageRestriction": "16 yrs & above"
+  },
+  {
+    "name": "Kanika Kapoor Live Concert",
+    "description": "Bollywood playback singer performs her hit songs",
+    "price": 1000,
+    "totalTickets": 200,
+    "location": "Siri Fort Auditorium, Delhi",
+    "city": "Delhi",
+    "category": "music",
+    "eventDate": 1762214400000,
+    "userId": "user_2uDZXzZkFIIpkK2HVZHovETVzU",
+    "isFeatured": false,
+    "tags": [
+      "bollywood",
+      "playback",
+      "concert"
+    ],
+    "language": "Hindi, English",
+    "duration": "3 Hours",
+    "ageRestriction": "All Ages"
+  },
+  {
+    "name": "Bangalore International Film Festival",
+    "description": "Screening of critically acclaimed films from around the world",
+    "price": 400,
+    "totalTickets": 600,
+    "location": "Prasanna Theatre, Bangalore",
+    "city": "Bangalore",
+    "category": "activities",
+    "eventDate": 1727222400000,
+    "userId": "user_2vEZXzZkFIIpkK2HVZHovETVzV",
+    "isFeatured": true,
+    "tags": [
+      "film",
+      "international",
+      "festival"
+    ],
+    "language": "Hindi, English",
+    "duration": "6 Hours",
+    "ageRestriction": "All Ages"
+  },
+  {
+    "name": "Chennai Music Season 2024",
+    "description": "Classical music festival featuring renowned Carnatic musicians",
+    "price": 300,
+    "totalTickets": 500,
+    "location": "Music Academy, Chennai",
+    "city": "Chennai",
+    "category": "music",
+    "eventDate": 1762214400000,
+    "userId": "user_2wFZXzZkFIIpkK2HVZHovETVzW",
+    "isFeatured": true,
+    "tags": [
+      "classical",
+      "carnatic",
+      "music"
+    ],
+    "language": "Hindi, English",
+    "duration": "2.5 Hours",
+    "ageRestriction": "All Ages"
+  },
+  {
+    "name": "Hyderabad Pearls and Jewels Show",
+    "description": "Exhibition of traditional and contemporary jewelry",
+    "price": 100,
+    "totalTickets": 800,
+    "location": "HITEX Exhibition Centre, Hyderabad",
+    "city": "Hyderabad",
+    "category": "activities",
+    "eventDate": 1762214400000,
+    "userId": "user_2xGZXzZkFIIpkK2HVZHovETVzX",
+    "isFeatured": false,
+    "tags": [
+      "jewelry",
+      "pearls",
+      "exhibition"
+    ],
+    "language": "Hindi, English",
+    "duration": "3 Hours",
+    "ageRestriction": "All Ages"
+  },
+  {
+    "name": "Kolkata International Film Festival",
+    "description": "Asia's oldest film festival showcasing world cinema",
+    "price": 200,
+    "totalTickets": 1000,
+    "location": "Nandan, Kolkata",
+    "city": "Kolkata",
+    "category": "activities",
+    "eventDate": 1723845600000,
+    "userId": "user_2yHZXzZkFIIpkK2HVZHovETVzY",
+    "isFeatured": true,
+    "tags": [
+      "film",
+      "international",
+      "cinema"
+    ],
+    "language": "Hindi, English",
+    "duration": "6 Hours",
+    "ageRestriction": "All Ages"
+  },
+  {
+    "name": "Pune International Marathon",
+    "description": "Annual marathon through the historic city of Pune",
+    "price": 600,
+    "totalTickets": 2000,
+    "location": "Shiv Chhatrapati Sports Complex, Pune",
+    "city": "Pune",
+    "category": "activities",
+    "eventDate": 1762214400000,
+    "userId": "user_2zIZXzZkFIIpkK2HVZHovETVzZ",
+    "isFeatured": false,
+    "tags": [
+      "marathon",
+      "fitness",
+      "pune"
+    ],
+    "language": "Hindi, English",
+    "duration": "3 Hours",
+    "ageRestriction": "All Ages"
+  },
+  {
+    "name": "Jaipur International Film Festival",
+    "description": "Film festival celebrating independent and world cinema",
+    "price": 300,
+    "totalTickets": 400,
+    "location": "Jawahar Kala Kendra, Jaipur",
+    "city": "Jaipur",
+    "category": "activities",
+    "eventDate": 1762214400000,
+    "userId": "user_2aJZXzZkFIIpkK2HVZHovETVzA",
+    "isFeatured": false,
+    "tags": [
+      "film",
+      "independent",
+      "cinema"
+    ],
+    "language": "Hindi, English",
+    "duration": "6 Hours",
+    "ageRestriction": "All Ages"
+  },
+  {
+    "name": "Ahmedabad International Kite Festival",
+    "description": "Colorful kite festival celebrating Makar Sankranti",
+    "price": 0,
+    "totalTickets": 5000,
+    "location": "Sabarmati Riverfront, Ahmedabad",
+    "city": "Ahmedabad",
+    "category": "activities",
+    "eventDate": 1762214400000,
+    "userId": "user_2bKZXzZkFIIpkK2HVZHovETVzB",
+    "isFeatured": true,
+    "tags": [
+      "kite",
+      "festival",
+      "free"
+    ],
+    "language": "Hindi, English",
+    "duration": "6 Hours",
+    "ageRestriction": "All Ages"
+  },
+  {
+    "name": "Lucknow Food Festival",
+    "description": "Celebration of Awadhi cuisine and street food",
+    "price": 250,
+    "totalTickets": 1000,
+    "location": "Gomti Riverfront, Lucknow",
+    "city": "Lucknow",
+    "category": "activities",
+    "eventDate": 1762214400000,
+    "userId": "user_2cLZXzZkFIIpkK2HVZHovETVzC",
+    "isFeatured": false,
+    "tags": [
+      "food",
+      "awadhi",
+      "cuisine"
+    ],
+    "language": "Hindi, English",
+    "duration": "6 Hours",
+    "ageRestriction": "All Ages"
+  },
+  {
+    "name": "Chandigarh Rock Festival",
+    "description": "Rock music festival featuring local and national bands",
+    "price": 800,
+    "totalTickets": 500,
+    "location": "Sector 17 Plaza, Chandigarh",
+    "city": "Chandigarh",
+    "category": "music",
+    "eventDate": 1762214400000,
+    "userId": "user_2dMZXzZkFIIpkK2HVZHovETVzD",
+    "isFeatured": false,
+    "tags": [
+      "rock",
+      "music",
+      "festival"
+    ],
+    "language": "Hindi, English",
+    "duration": "2.5 Hours",
+    "ageRestriction": "All Ages"
+  },
+  {
+    "name": "Indore Street Food Festival",
+    "description": "Celebration of Indore's famous street food culture",
+    "price": 150,
+    "totalTickets": 800,
+    "location": "Sarafa Bazaar, Indore",
+    "city": "Indore",
+    "category": "activities",
+    "eventDate": 1762214400000,
+    "userId": "user_2eNZXzZkFIIpkK2HVZHovETVzE",
+    "isFeatured": false,
+    "tags": [
+      "food",
+      "street",
+      "indore"
+    ],
+    "language": "Hindi, English",
+    "duration": "6 Hours",
+    "ageRestriction": "All Ages"
+  },
+  {
+    "name": "Bhopal Classical Music Festival",
+    "description": "Hindustani classical music performances by renowned artists",
+    "price": 500,
+    "totalTickets": 200,
+    "location": "Ravindra Bhavan, Bhopal",
+    "city": "Bhopal",
+    "category": "music",
+    "eventDate": 1720578600000,
+    "userId": "user_2fOZXzZkFIIpkK2HVZHovETVzF",
+    "isFeatured": false,
+    "tags": [
+      "classical",
+      "hindustani",
+      "music"
+    ],
+    "language": "Hindi, English",
+    "duration": "2.5 Hours",
+    "ageRestriction": "All Ages"
+  },
+  {
+    "name": "Kochi Muziris Heritage Walk",
+    "description": "Guided tour of Kochi's historic Fort Kochi area",
+    "price": 200,
+    "totalTickets": 30,
+    "location": "Fort Kochi, Kochi",
+    "city": "Kochi",
+    "category": "activities",
+    "eventDate": 1723845600000,
+    "userId": "user_2gPZXzZkFIIpkK2HVZHovETVzG",
+    "isFeatured": false,
+    "tags": [
+      "heritage",
+      "walk",
+      "fort"
+    ],
+    "language": "Hindi, English",
+    "duration": "3 Hours",
+    "ageRestriction": "All Ages"
+  },
+  {
+    "name": "Coimbatore Classical Dance Festival",
+    "description": "Bharatanatyam and other classical dance performances",
+    "price": 400,
+    "totalTickets": 300,
+    "location": "Krishnammal College, Coimbatore",
+    "city": "Coimbatore",
+    "category": "theater",
+    "eventDate": 1726012800000,
+    "userId": "user_2hQZXzZkFIIpkK2HVZHovETVzH",
+    "isFeatured": false,
+    "tags": [
+      "classical",
+      "dance",
+      "bharatanatyam"
+    ],
+    "language": "Hindi, English",
+    "duration": "2.5 Hours",
+    "ageRestriction": "12 yrs & above"
+  },
+  {
+    "name": "Surat Textile Expo 2024",
+    "description": "International textile and fashion exhibition",
+    "price": 100,
+    "totalTickets": 2000,
+    "location": "Surat International Exhibition Centre",
+    "city": "Surat",
+    "category": "activities",
+    "eventDate": 1728172800000,
+    "userId": "user_2iRZXzZkFIIpkK2HVZHovETVzI",
+    "isFeatured": false,
+    "tags": [
+      "textile",
+      "fashion",
+      "exhibition"
+    ],
+    "language": "Hindi, English",
+    "duration": "3 Hours",
+    "ageRestriction": "All Ages"
+  },
+  {
+    "name": "Mumbai Comedy Nights",
+    "description": "Weekly comedy show featuring Mumbai's best comedians",
+    "price": 300,
+    "totalTickets": 200,
+    "location": "Comedy Store, Mumbai",
+    "city": "Mumbai",
+    "category": "comedy",
+    "eventDate": 1762214400000,
+    "userId": "user_2jSZXzZkFIIpkK2HVZHovETVzJ",
+    "isFeatured": false,
+    "tags": [
+      "comedy",
+      "weekly",
+      "mumbai"
+    ],
+    "language": "Hindi, English",
+    "duration": "1.5 Hours",
+    "ageRestriction": "16 yrs & above"
+  },
+  {
+    "name": "Delhi International Jazz Festival",
+    "description": "Jazz music festival featuring international and Indian artists",
+    "price": 1200,
+    "totalTickets": 400,
+    "location": "India Habitat Centre, Delhi",
+    "city": "Delhi",
+    "category": "music",
+    "eventDate": 1762214400000,
+    "userId": "user_2kTZXzZkFIIpkK2HVZHovETVzK",
+    "isFeatured": true,
+    "tags": [
+      "jazz",
+      "international",
+      "music"
+    ],
+    "language": "Hindi, English",
+    "duration": "2.5 Hours",
+    "ageRestriction": "All Ages"
+  },
+  {
+    "name": "Bangalore Startup Summit 2024",
+    "description": "India's largest startup conference and networking event",
+    "price": 2000,
+    "totalTickets": 1000,
+    "location": "Bangalore Palace, Bangalore",
+    "city": "Bangalore",
+    "category": "activities",
+    "eventDate": 1762214400000,
+    "userId": "user_2lUZXzZkFIIpkK2HVZHovETVzL",
+    "isFeatured": true,
+    "tags": [
+      "startup",
+      "conference",
+      "networking"
+    ],
+    "language": "Hindi, English",
+    "duration": "3 Hours",
+    "ageRestriction": "All Ages"
+  },
+  {
+    "name": "Chennai International Music Festival",
+    "description": "World music festival featuring artists from across the globe",
+    "price": 800,
+    "totalTickets": 600,
+    "location": "Chennai Trade Centre, Chennai",
+    "city": "Chennai",
+    "category": "music",
+    "eventDate": 1722393600000,
+    "userId": "user_2mVZXzZkFIIpkK2HVZHovETVzM",
+    "isFeatured": true,
+    "tags": [
+      "world",
+      "music",
+      "international"
+    ],
+    "language": "Hindi, English",
+    "duration": "2.5 Hours",
+    "ageRestriction": "All Ages"
+  },
+  {
+    "name": "Hyderabad International Trade Fair",
+    "description": "Annual trade fair showcasing products from around the world",
+    "price": 50,
+    "totalTickets": 5000,
+    "location": "HITEX Exhibition Centre, Hyderabad",
+    "city": "Hyderabad",
+    "category": "activities",
+    "eventDate": 1720578600000,
+    "userId": "user_2nWZXzZkFIIpkK2HVZHovETVzN",
+    "isFeatured": false,
+    "tags": [
+      "trade",
+      "fair",
+      "international"
+    ],
+    "language": "Hindi, English",
+    "duration": "3 Hours",
+    "ageRestriction": "All Ages"
+  },
+  {
+    "name": "Kolkata Classical Music Festival",
+    "description": "Hindustani classical music festival featuring maestros",
+    "price": 600,
+    "totalTickets": 400,
+    "location": "Rabindra Sadan, Kolkata",
+    "city": "Kolkata",
+    "category": "music",
+    "eventDate": 1723845600000,
+    "userId": "user_2oXZXzZkFIIpkK2HVZHovETVzO",
+    "isFeatured": true,
+    "tags": [
+      "classical",
+      "hindustani",
+      "maestros"
+    ],
+    "language": "Hindi, English",
+    "duration": "2.5 Hours",
+    "ageRestriction": "All Ages"
+  },
+  {
+    "name": "Jaipur International Kite Festival",
+    "description": "Colorful kite festival with international participants",
+    "price": 0,
+    "totalTickets": 3000,
+    "location": "Jantar Mantar, Jaipur",
+    "city": "Jaipur",
+    "category": "activities",
+    "eventDate": 1762214400000,
+    "userId": "user_2qZZXzZkFIIpkK2HVZHovETVzQ",
+    "isFeatured": true,
+    "tags": [
+      "kite",
+      "festival",
+      "free"
+    ],
+    "language": "Hindi, English",
+    "duration": "6 Hours",
+    "ageRestriction": "All Ages"
+  },
+  {
+    "name": "Ahmedabad International Food Festival",
+    "description": "Culinary festival featuring cuisines from around the world",
+    "price": 300,
+    "totalTickets": 1500,
+    "location": "Sabarmati Riverfront, Ahmedabad",
+    "city": "Ahmedabad",
+    "category": "activities",
+    "eventDate": 1762214400000,
+    "userId": "user_2rAZXzZkFIIpkK2HVZHovETVzR",
+    "isFeatured": false,
+    "tags": [
+      "food",
+      "international",
+      "culinary"
+    ],
+    "language": "Hindi, English",
+    "duration": "6 Hours",
+    "ageRestriction": "All Ages"
+  },
+  {
+    "name": "Lucknow International Music Festival",
+    "description": "Classical and contemporary music festival",
+    "price": 500,
+    "totalTickets": 300,
+    "location": "Gomti Riverfront, Lucknow",
+    "city": "Lucknow",
+    "category": "music",
+    "eventDate": 1724985600000,
+    "userId": "user_2sBZXzZkFIIpkK2HVZHovETVzS",
+    "isFeatured": false,
+    "tags": [
+      "music",
+      "classical",
+      "contemporary"
+    ],
+    "language": "Hindi, English",
+    "duration": "2.5 Hours",
+    "ageRestriction": "All Ages"
+  },
+  {
+    "name": "Chandigarh International Film Festival",
+    "description": "Film festival showcasing regional and international cinema",
+    "price": 200,
+    "totalTickets": 400,
+    "location": "Tagore Theatre, Chandigarh",
+    "city": "Chandigarh",
+    "category": "activities",
+    "eventDate": 1727222400000,
+    "userId": "user_2tCZXzZkFIIpkK2HVZHovETVzT",
+    "isFeatured": false,
+    "tags": [
+      "film",
+      "regional",
+      "international"
+    ],
+    "language": "Hindi, English",
+    "duration": "6 Hours",
+    "ageRestriction": "All Ages"
+  },
+  {
+    "name": "Indore International Dance Festival",
+    "description": "Dance festival featuring various Indian and international dance forms",
+    "price": 400,
+    "totalTickets": 500,
+    "location": "Rajwada Palace, Indore",
+    "city": "Indore",
+    "category": "theater",
+    "eventDate": 1722393600000,
+    "userId": "user_2uDZXzZkFIIpkK2HVZHovETVzU",
+    "isFeatured": false,
+    "tags": [
+      "dance",
+      "international",
+      "festival"
+    ],
+    "language": "Hindi, English",
+    "duration": "2.5 Hours",
+    "ageRestriction": "12 yrs & above"
+  },
+  {
+    "name": "Bhopal International Art Exhibition",
+    "description": "Contemporary art exhibition featuring works by Indian and international artists",
+    "price": 100,
+    "totalTickets": 600,
+    "location": "Bharat Bhavan, Bhopal",
+    "city": "Bhopal",
+    "category": "activities",
+    "eventDate": 1762214400000,
+    "userId": "user_2vEZXzZkFIIpkK2HVZHovETVzV",
+    "isFeatured": false,
+    "tags": [
+      "art",
+      "contemporary",
+      "exhibition"
+    ],
+    "language": "Hindi, English",
+    "duration": "3 Hours",
+    "ageRestriction": "All Ages"
+  },
+  {
+    "name": "Kochi International Theatre Festival",
+    "description": "Theatre festival featuring plays from India and abroad",
+    "price": 300,
+    "totalTickets": 400,
+    "location": "Kerala Sangeetha Nataka Akademi, Kochi",
+    "city": "Kochi",
+    "category": "theater",
+    "eventDate": 1762214400000,
+    "userId": "user_2wFZXzZkFIIpkK2HVZHovETVzW",
+    "isFeatured": false,
+    "tags": [
+      "theatre",
+      "international",
+      "plays"
+    ],
+    "language": "Hindi, English",
+    "duration": "2.5 Hours",
+    "ageRestriction": "12 yrs & above"
+  },
+  {
+    "name": "Coimbatore International Yoga Festival",
+    "description": "Yoga festival with workshops and demonstrations by renowned teachers",
+    "price": 500,
+    "totalTickets": 800,
+    "location": "Codissia Trade Fair Complex, Coimbatore",
+    "city": "Coimbatore",
+    "category": "activities",
+    "eventDate": 1762214400000,
+    "userId": "user_2xGZXzZkFIIpkK2HVZHovETVzX",
+    "isFeatured": true,
+    "tags": [
+      "yoga",
+      "wellness",
+      "festival"
+    ],
+    "language": "Hindi, English",
+    "duration": "6 Hours",
+    "ageRestriction": "All Ages"
+  },
+  {
+    "name": "Surat International Fashion Week",
+    "description": "Fashion week showcasing latest trends in Indian and international fashion",
+    "price": 800,
+    "totalTickets": 300,
+    "location": "Surat International Exhibition Centre",
+    "city": "Surat",
+    "category": "activities",
+    "eventDate": 1728172800000,
+    "userId": "user_2yHZXzZkFIIpkK2HVZHovETVzY",
+    "isFeatured": true,
+    "tags": [
+      "fashion",
+      "week",
+      "trends"
+    ],
+    "language": "Hindi, English",
+    "duration": "3 Hours",
+    "ageRestriction": "All Ages"
+  },
+  {
+    "name": "Mumbai Comedy Festival",
+    "description": "Laugh out loud with India's best comedians in Mumbai!",
+    "price": 299,
+    "totalTickets": 150,
+    "location": "NCPA, Mumbai",
+    "city": "Mumbai",
+    "category": "comedy",
+    "eventDate": 1728172800000,
+    "userId": "user_2yHZXzZkFIIpkK2HVZHovETVzY",
+    "isFeatured": true,
+    "tags": ["comedy", "festival", "mumbai"],
+    "language": "Hindi, English",
+    "duration": "2 Hours",
+    "ageRestriction": "16+"
+  },
+  {
+    "name": "Bengaluru Tech Conference",
+    "description": "Latest in technology and innovation",
+    "price": 1999,
+    "totalTickets": 200,
+    "location": "Bangalore Palace, Bengaluru",
+    "city": "Bangalore",
+    "category": "activities",
+    "eventDate": 1728172800000,
+    "userId": "user_2yHZXzZkFIIpkK2HVZHovETVzY",
+    "isFeatured": false,
+    "tags": ["tech", "conference", "bengaluru"],
+    "language": "English",
+    "duration": "6 Hours",
+    "ageRestriction": "18+"
+  },
+  {
+    "name": "Hyderabad Food Festival",
+    "description": "Taste the best of Hyderabad's cuisine",
+    "price": 499,
+    "totalTickets": 100,
+    "location": "Hitec City, Hyderabad",
+    "city": "Hyderabad",
+    "category": "activities",
+    "eventDate": 1728172800000,
+    "userId": "user_2yHZXzZkFIIpkK2HVZHovETVzY",
+    "isFeatured": false,
+    "tags": ["food", "festival", "hyderabad"],
+    "language": "Telugu, Hindi, English",
+    "duration": "4 Hours",
+    "ageRestriction": "All Ages"
+  },
+  {
+    "name": "Chennai Classical Music Concert",
+    "description": "Traditional Carnatic music performance",
+    "price": 799,
+    "totalTickets": 80,
+    "location": "Music Academy, Chennai",
+    "city": "Chennai",
+    "category": "music",
+    "eventDate": 1728172800000,
+    "userId": "user_2yHZXzZkFIIpkK2HVZHovETVzY",
+    "isFeatured": true,
+    "tags": ["classical", "carnatic", "chennai"],
+    "language": "Tamil, Sanskrit",
+    "duration": "3 Hours",
+    "ageRestriction": "All Ages"
+  },
+  {
+    "name": "Kolkata Book Fair",
+    "description": "World's largest book fair",
+    "price": 50,
+    "totalTickets": 1000,
+    "location": "Milan Mela Ground, Kolkata",
+    "city": "Kolkata",
+    "category": "activities",
+    "eventDate": 1728172800000,
+    "userId": "user_2yHZXzZkFIIpkK2HVZHovETVzY",
+    "isFeatured": false,
+    "tags": ["books", "fair", "kolkata"],
+    "language": "Bengali, English, Hindi",
+    "duration": "8 Hours",
+    "ageRestriction": "All Ages"
+  },
+  {
+    "name": "Pune Marathon",
+    "description": "Annual marathon through Pune city",
+    "price": 299,
+    "totalTickets": 500,
+    "location": "Shivajinagar, Pune",
+    "city": "Pune",
+    "category": "sports",
+    "eventDate": 1728172800000,
+    "userId": "user_2yHZXzZkFIIpkK2HVZHovETVzY",
+    "isFeatured": false,
+    "tags": ["marathon", "running", "pune"],
+    "language": "Marathi, English, Hindi",
+    "duration": "4 Hours",
+    "ageRestriction": "12+"
+  },
+  {
+    "name": "Ahmedabad Heritage Walk",
+    "description": "Explore the rich heritage of Ahmedabad",
+    "price": 199,
+    "totalTickets": 30,
+    "location": "Old City, Ahmedabad",
+    "city": "Ahmedabad",
+    "category": "activities",
+    "eventDate": 1728172800000,
+    "userId": "user_2yHZXzZkFIIpkK2HVZHovETVzY",
+    "isFeatured": false,
+    "tags": ["heritage", "walk", "ahmedabad"],
+    "language": "Gujarati, English, Hindi",
+    "duration": "3 Hours",
+    "ageRestriction": "All Ages"
+  },
+  {
+    "name": "Goa Beach Party",
+    "description": "Ultimate beach party experience",
+    "price": 999,
+    "totalTickets": 200,
+    "location": "Baga Beach, Goa",
+    "city": "Goa",
+    "category": "music",
+    "eventDate": 1728172800000,
+    "userId": "user_2yHZXzZkFIIpkK2HVZHovETVzY",
+    "isFeatured": true,
+    "tags": ["beach", "party", "goa"],
+    "language": "English, Hindi, Konkani",
+    "duration": "6 Hours",
+    "ageRestriction": "18+"
+  },
+  {
+    "name": "Jaipur Literature Festival",
+    "description": "Asia's largest free literature festival",
+    "price": 0,
+    "totalTickets": 500,
+    "location": "Diggi Palace, Jaipur",
+    "city": "Jaipur",
+    "category": "activities",
+    "eventDate": 1728172800000,
+    "userId": "user_2yHZXzZkFIIpkK2HVZHovETVzY",
+    "isFeatured": true,
+    "tags": ["literature", "festival", "jaipur"],
+    "language": "Hindi, English, Rajasthani",
+    "duration": "8 Hours",
+    "ageRestriction": "All Ages"
   }
 ]

@@ -15,26 +15,26 @@ import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
+    Card,
+    CardContent,
+    CardDescription,
+    CardFooter,
+    CardHeader,
+    CardTitle,
 } from "@/components/ui/card";
 import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
+    Form,
+    FormControl,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
 } from "@/components/ui/popover";
 import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
@@ -48,11 +48,18 @@ const eventSchema = z.object({
   name: z.string().min(1, "Name is required"),
   description: z.string().min(1, "Description is required"),
   location: z.string().min(1, "Location is required"),
+  city: z.string().min(1, "City is required"),
+  category: z.string().min(1, "Category is required"),
   eventDate: z
     .number()
     .refine((t) => !isNaN(t) && t > 0, "Valid date is required"),
   price: z.number().min(0, "Price must be non‑negative"),
   totalTickets: z.number().min(1, "At least 1 ticket"),
+  isFeatured: z.boolean().optional(),
+  tags: z.array(z.string()).optional(),
+  language: z.string().optional(),
+  duration: z.string().optional(),
+  ageRestriction: z.string().optional(),
 });
 
 type EventFormValues = z.infer<typeof eventSchema>;
@@ -64,10 +71,17 @@ interface EventFormProps {
     name: string;
     description: string;
     location: string;
+    city: string;
+    category: string;
     eventDate: number;
     price: number;
     totalTickets: number;
     imageStorageId?: Id<"_storage">;
+    isFeatured?: boolean;
+    tags?: string[];
+    language?: string;
+    duration?: string;
+    ageRestriction?: string;
   };
 }
 
@@ -95,10 +109,17 @@ export default function EventForm({ mode, initialData }: EventFormProps) {
       name: initialData?.name || "",
       description: initialData?.description || "",
       location: initialData?.location || "",
+      city: initialData?.city || "",
+      category: initialData?.category || "",
       // now a number
       eventDate: initialData?.eventDate || Date.now(),
       price: initialData?.price || 0,
       totalTickets: initialData?.totalTickets || 1,
+      isFeatured: initialData?.isFeatured || false,
+      tags: initialData?.tags || [],
+      language: initialData?.language || "",
+      duration: initialData?.duration || "",
+      ageRestriction: initialData?.ageRestriction || "",
     },
   });
 
@@ -206,12 +227,52 @@ export default function EventForm({ mode, initialData }: EventFormProps) {
                   <FormItem>
                     <FormLabel>Location</FormLabel>
                     <FormControl>
-                      <Input {...field} placeholder="City, Venue" />
+                      <Input {...field} placeholder="Venue, Address" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
+
+              <div className="flex gap-4">
+                <FormField
+                  control={form.control}
+                  name="city"
+                  render={({ field }) => (
+                    <FormItem className="flex-1">
+                      <FormLabel>City</FormLabel>
+                      <FormControl>
+                        <Input {...field} placeholder="New York" />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="category"
+                  render={({ field }) => (
+                    <FormItem className="flex-1">
+                      <FormLabel>Category</FormLabel>
+                      <FormControl>
+                        <select
+                          {...field}
+                          className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                        >
+                          <option value="">Select category</option>
+                          <option value="comedy">Comedy</option>
+                          <option value="music">Music</option>
+                          <option value="sports">Sports</option>
+                          <option value="theater">Theater</option>
+                          <option value="activities">Activities</option>
+                        </select>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
 
               <FormField
                 control={form.control}
@@ -284,6 +345,122 @@ export default function EventForm({ mode, initialData }: EventFormProps) {
                     </FormItem>
                   )}
                 />
+              </div>
+
+              <div className="flex gap-4">
+                <FormField
+                  control={form.control}
+                  name="totalTickets"
+                  render={({ field }) => (
+                    <FormItem className="flex-1">
+                      <FormLabel>Total Tickets</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="number"
+                          {...field}
+                          onChange={(e) =>
+                            field.onChange(Number(e.target.value))
+                          }
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="isFeatured"
+                  render={({ field }) => (
+                    <FormItem className="flex-1 flex items-center space-x-2 space-y-0">
+                      <FormControl>
+                        <input
+                          type="checkbox"
+                          checked={field.value}
+                          onChange={field.onChange}
+                          className="h-4 w-4 rounded border-gray-300"
+                        />
+                      </FormControl>
+                      <FormLabel className="text-sm font-medium">
+                        Featured Event
+                      </FormLabel>
+                    </FormItem>
+                  )}
+                />
+              </div>
+
+              <FormField
+                control={form.control}
+                name="tags"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Tags (comma-separated)</FormLabel>
+                    <FormControl>
+                      <Input 
+                        {...field}
+                        value={field.value?.join(", ") || ""}
+                        onChange={(e) => {
+                          const tags = e.target.value
+                            .split(",")
+                            .map(tag => tag.trim())
+                            .filter(tag => tag.length > 0);
+                          field.onChange(tags);
+                        }}
+                        placeholder="comedy, live, weekend"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {/* Event Guide Fields */}
+              <div className="space-y-4">
+                <h3 className="text-lg font-semibold">Event Guide</h3>
+                
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <FormField
+                    control={form.control}
+                    name="language"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Language</FormLabel>
+                        <FormControl>
+                          <Input {...field} placeholder="English, Hindi" />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="duration"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Duration</FormLabel>
+                        <FormControl>
+                          <Input {...field} placeholder="1 Hour 30 Minutes" />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="ageRestriction"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Age Restriction</FormLabel>
+                        <FormControl>
+                          <Input {...field} placeholder="18 yrs & above" />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
               </div>
             </div>
 

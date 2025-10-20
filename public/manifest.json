@@ -1,0 +1,23 @@
+{
+  "name": "Get Show Tickets",
+  "short_name": "GST",
+  "description": "Your ultimate platform for discovering and purchasing tickets for concerts, theater, and live events.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#E63946",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/apple-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ]
+}
+

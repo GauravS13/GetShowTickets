@@ -1,0 +1,31 @@
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="ticketGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#E63946;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#D62828;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background circle for better visibility -->
+  <circle cx="16" cy="16" r="15" fill="#FFFFFF" stroke="url(#ticketGradient)" stroke-width="2"/>
+  
+  <!-- Ticket Icon -->
+  <g transform="translate(8, 8)">
+    <!-- Main ticket body -->
+    <path d="M2 1C2 0.447715 2.44772 0 3 0H13C13.5523 0 14 0.447715 14 1V3C14 3.55228 13.5523 4 13 4C12.4477 4 12 4.44772 12 5C12 5.55228 12.4477 6 13 6C13.5523 6 14 6.44772 14 7V9C14 9.55228 13.5523 10 13 10H3C2.44772 10 2 9.55228 2 9V7C2 6.44772 2.44772 6 3 6C3.55228 6 4 5.55228 4 5C4 4.44772 3.55228 4 3 4C2.44772 4 2 3.55228 2 3V1Z" 
+          fill="url(#ticketGradient)"/>
+    
+    <!-- Ticket perforations -->
+    <circle cx="8" cy="1" r="0.5" fill="#FFFFFF" opacity="0.8"/>
+    <circle cx="8" cy="3" r="0.5" fill="#FFFFFF" opacity="0.6"/>
+    <circle cx="8" cy="5" r="0.5" fill="#FFFFFF" opacity="0.6"/>
+    <circle cx="8" cy="7" r="0.5" fill="#FFFFFF" opacity="0.6"/>
+    <circle cx="8" cy="9" r="0.5" fill="#FFFFFF" opacity="0.8"/>
+    
+    <!-- Star accent -->
+    <path d="M8 0.5L8.25 1.25L9 1.25L8.4 1.75L8.65 2.5L8 2.25L7.35 2.5L7.6 1.75L7 1.25L7.75 1.25L8 0.5Z" 
+          fill="#FFD700" 
+          opacity="0.9"/>
+  </g>
+</svg>
+

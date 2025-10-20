@@ -5,6 +5,7 @@ import { Id } from "@/convex/_generated/dataModel";
 import { useStorageUrl } from "@/lib/utils";
 import { useUser } from "@clerk/nextjs";
 import { useQuery } from "convex/react";
+import { motion } from "framer-motion";
 import {
     CalendarDays,
     Check,
@@ -56,43 +57,44 @@ export default function EventCard({ eventId }: { eventId: Id<"events"> }) {
   const isPastEvent = event.eventDate < Date.now();
   const isEventOwner = user?.id === event?.userId;
 
+
   // Renders the section indicating the ticket queue status
   const renderQueueStatus = () => {
     if (!queuePosition || queuePosition.status !== "waiting") return null;
 
     if (availability.purchasedCount >= availability.totalTickets) {
       return (
-        <div className="flex items-center gap-3 p-3 rounded-xl glass-effect border border-destructive/20">
-          <Ticket className="w-5 h-5 text-destructive" />
-          <span className="text-destructive text-sm font-medium">Event is sold out</span>
+        <div className="flex items-center gap-2 p-2 rounded border border-destructive/20 bg-destructive/5">
+          <Ticket className="w-3 h-3 text-destructive" />
+          <span className="text-destructive text-xs font-medium">Event is sold out</span>
         </div>
       );
     }
 
     if (queuePosition.position === 2) {
       return (
-        <div className="flex flex-col lg:flex-row items-center justify-between gap-3 p-4 rounded-xl glass-effect border border-accent/30 energy-pulse">
-          <div className="flex items-center gap-3">
-            <CircleArrowRight className="w-5 h-5 text-accent" />
-            <span className="text-accent font-semibold text-sm">
+        <div className="flex items-center justify-between gap-2 p-2 rounded border border-accent/30 bg-accent/5">
+          <div className="flex items-center gap-2">
+            <CircleArrowRight className="w-3 h-3 text-accent" />
+            <span className="text-accent font-medium text-xs">
               You&apos;re next in line! (#{queuePosition.position})
             </span>
           </div>
-          <div className="flex items-center gap-2">
-            <LoaderCircle className="w-4 h-4 animate-spin text-accent" />
-            <span className="text-accent text-xs font-medium">Waiting for ticket</span>
+          <div className="flex items-center gap-1">
+            <LoaderCircle className="w-3 h-3 animate-spin text-accent" />
+            <span className="text-accent text-xs font-medium">Waiting</span>
           </div>
         </div>
       );
     }
 
     return (
-      <div className="flex items-center justify-between p-3 rounded-xl glass-effect border border-primary/20">
-        <div className="flex items-center gap-3">
-          <LoaderCircle className="w-4 h-4 animate-spin text-primary" />
-          <span className="text-primary text-sm font-medium">Queue position</span>
+      <div className="flex items-center justify-between p-2 rounded border border-primary/20 bg-primary/5">
+        <div className="flex items-center gap-2">
+          <LoaderCircle className="w-3 h-3 animate-spin text-primary" />
+          <span className="text-primary text-xs font-medium">Queue position</span>
         </div>
-        <Badge variant="purple" className="text-primary-foreground">
+        <Badge variant="secondary" className="text-xs">
           #{queuePosition.position}
         </Badge>
       </div>
@@ -112,9 +114,9 @@ export default function EventCard({ eventId }: { eventId: Id<"events"> }) {
             e.stopPropagation();
             router.push(`/seller/events/${eventId}/edit`);
           }}
-          className="w-full justify-center gap-2 mt-2"
+          className="w-full justify-center gap-2"
         >
-          <PencilIcon className="w-4 h-4" />
+          <PencilIcon className="w-3 h-3" />
           Edit Event
         </Button>
       );
@@ -122,35 +124,25 @@ export default function EventCard({ eventId }: { eventId: Id<"events"> }) {
 
     if (userTicket) {
       return (
-        <div className="flex flex-col gap-3 p-4 rounded-xl glass-effect border border-green-500/20 mt-2">
-          <div className="flex items-center gap-3">
-            <Check className="w-5 h-5 text-green-500" />
-            <span className="text-green-600 font-semibold text-sm">
-              You have a ticket!
-            </span>
-          </div>
-          <Button
-            variant="gradient"
-            size="sm"
-            onClick={() => router.push(`/tickets/${userTicket._id}`)}
-            className="w-full"
-          >
-            View Your Ticket
-          </Button>
+        <div className="flex items-center gap-1.5 p-2 rounded border border-green-500/20 bg-green-50">
+          <Check className="w-3 h-3 text-green-600" />
+          <span className="text-green-700 font-medium text-xs">
+            You have a ticket!
+          </span>
         </div>
       );
     }
 
     return (
-      <div className="mt-2 space-y-2">
+      <div className="space-y-2">
         {queuePosition?.status === "offered" && (
           <PurchaseTicket eventId={eventId} />
         )}
         {renderQueueStatus()}
         {queuePosition?.status === "expired" && (
-          <div className="flex items-center gap-3 p-3 rounded-xl glass-effect border border-destructive/20">
-            <XCircle className="w-5 h-5 text-destructive" />
-            <span className="text-destructive font-semibold text-sm">
+          <div className="flex items-center gap-1.5 p-2 rounded border border-destructive/20 bg-destructive/5">
+            <XCircle className="w-3 h-3 text-destructive" />
+            <span className="text-destructive text-xs font-medium">
               Offer expired
             </span>
           </div>
@@ -160,39 +152,49 @@ export default function EventCard({ eventId }: { eventId: Id<"events"> }) {
   };
 
   return (
-    <Card
-      variant={isPastEvent ? "default" : "gradient"}
-      onClick={(e) => {
-        e.stopPropagation();
-        e.preventDefault();
-        router.push(`/event/${eventId}`);
+    <motion.div
+      whileHover={{ 
+        scale: 1.01,
+        y: -2,
       }}
-      className={`cursor-pointer transition-all duration-500 hover:scale-105 ${
-        isPastEvent ? "opacity-75 hover:opacity-100" : "hover-lift"
-      }`}
+      whileTap={{ scale: 0.99 }}
+      transition={{ 
+        type: "spring", 
+        stiffness: 400, 
+        damping: 40,
+        mass: 0.8 
+      }}
     >
-      <CardHeader className="relative">
+      <Card
+        variant={isPastEvent ? "default" : "default"}
+        onClick={(e) => {
+          e.stopPropagation();
+          e.preventDefault();
+          router.push(`/event/${eventId}`);
+        }}
+        className={`cursor-pointer transition-all duration-200 ${
+          isPastEvent ? "opacity-75 hover:opacity-100" : ""
+        }`}
+      >
+      <CardHeader className="relative p-0">
         {imageUrl && (
-          <div className="relative w-full h-52 overflow-hidden">
+          <div className="relative w-full h-48 overflow-hidden rounded-t-lg">
             <Image
               src={imageUrl}
               alt={event.name}
               fill
-              className="object-cover transition-transform duration-500 hover:scale-110"
+              className="object-cover transition-transform duration-300"
               priority
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
-            <div className="absolute inset-0 bg-gradient-to-r from-primary/20 via-transparent to-secondary/20 opacity-0 hover:opacity-100 transition-opacity duration-500" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
           </div>
         )}
       </CardHeader>
 
-      <CardContent className="space-y-4 p-4">
+      <CardContent className="space-y-3 p-4">
         <div className="flex justify-between items-start">
-          <div className="space-y-2">
-            <div className="flex flex-col sm:flex-row items-start gap-2">
-              <CardTitle className="text-xl font-bold text-foreground">{event.name}</CardTitle>
-            </div>
+          <div className="space-y-1">
+            <CardTitle className="text-lg font-semibold text-foreground">{event.name}</CardTitle>
             {isPastEvent && (
               <Badge
                 variant="outline"
@@ -203,15 +205,15 @@ export default function EventCard({ eventId }: { eventId: Id<"events"> }) {
             )}
           </div>
 
-          <div className="flex flex-col items-end gap-2">
+          <div className="flex flex-col items-end gap-1">
             <Badge
-              variant={isPastEvent ? "outline" : "energy"}
-              className="px-3 py-1 text-sm font-semibold"
+              variant={isPastEvent ? "outline" : "default"}
+              className="px-2 py-1 text-sm font-semibold"
             >
               £{event.price.toFixed(2)}
             </Badge>
             {isEventOwner && (
-              <Badge variant="purple" className="flex items-center gap-1">
+              <Badge variant="secondary" className="flex items-center gap-1 text-xs">
                 <StarIcon className="w-3 h-3" />
                 Your Event
               </Badge>
@@ -219,7 +221,7 @@ export default function EventCard({ eventId }: { eventId: Id<"events"> }) {
             {availability.purchasedCount >= availability.totalTickets && (
               <Badge
                 variant="destructive"
-                className="px-3 py-1 text-xs font-medium"
+                className="px-2 py-1 text-xs font-medium"
               >
                 Sold Out
               </Badge>
@@ -229,25 +231,25 @@ export default function EventCard({ eventId }: { eventId: Id<"events"> }) {
 
         <Separator />
 
-        <div className="space-y-3 text-muted-foreground text-sm">
-          <div className="flex items-center gap-3">
-            <MapPin className="w-4 h-4 text-primary" />
+        <div className="space-y-2 text-muted-foreground text-xs">
+          <div className="flex items-center gap-2">
+            <MapPin className="w-3 h-3" />
             <span className="font-medium">{event.location}</span>
           </div>
-          <div className="flex items-center gap-3">
-            <CalendarDays className="w-4 h-4 text-secondary" />
+          <div className="flex items-center gap-2">
+            <CalendarDays className="w-3 h-3" />
             <span className="font-medium">
               {new Date(event.eventDate).toLocaleDateString()}{" "}
               {isPastEvent && "(Ended)"}
             </span>
           </div>
-          <div className="flex items-center gap-3">
-            <Ticket className="w-4 h-4 text-accent" />
+          <div className="flex items-center gap-2">
+            <Ticket className="w-3 h-3" />
             <span className="font-medium">
               {availability.totalTickets - availability.purchasedCount} /{" "}
               {availability.totalTickets} available
               {!isPastEvent && availability.activeOffers > 0 && (
-                <Badge variant="live" className="ml-2 text-xs">
+                <Badge variant="secondary" className="ml-1 text-xs">
                   {availability.activeOffers}{" "}
                   {availability.activeOffers === 1 ? "person" : "people"}{" "}
                   buying
@@ -257,12 +259,13 @@ export default function EventCard({ eventId }: { eventId: Id<"events"> }) {
           </div>
         </div>
 
-        <p className="text-muted-foreground text-sm line-clamp-2 leading-relaxed">
+        <p className="text-muted-foreground text-xs line-clamp-2 leading-relaxed">
           {event.description}
         </p>
       </CardContent>
 
       <CardFooter className="p-4">{renderTicketStatus()}</CardFooter>
-    </Card>
+      </Card>
+    </motion.div>
   );
 }

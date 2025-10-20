@@ -12,11 +12,11 @@ import { useEffect, useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
+    Card,
+    CardContent,
+    CardFooter,
+    CardHeader,
+    CardTitle,
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import ReleaseTicket from "./ReleaseTicket";
@@ -108,7 +108,7 @@ export default function PurchaseTicket({ eventId }: { eventId: Id<"events"> }) {
         <Button
           //   onClick={handlePurchase}
           disabled={isExpired || isLoading}
-          className="w-full text-lg font-bold cursor-pointer"
+          className="w-full text-lg font-bold cursor-pointer bg-primary hover:bg-primary/90 text-primary-foreground py-3 px-6 rounded-lg transition-colors"
         >
           {isLoading
             ? "Redirecting to checkout..."

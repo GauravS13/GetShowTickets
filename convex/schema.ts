@@ -6,13 +6,24 @@ export default defineSchema({
     name: v.string(),
     description: v.string(),
     location: v.string(),
+    city: v.optional(v.string()),
+    category: v.optional(v.string()),
     eventDate: v.number(),
     price: v.number(),
     totalTickets: v.number(),
     userId: v.string(),
     imageStorageId: v.optional(v.id("_storage")),
     is_cancelled: v.optional(v.boolean()),
-  }),
+    isFeatured: v.optional(v.boolean()),
+    tags: v.optional(v.array(v.string())),
+    language: v.optional(v.string()),
+    duration: v.optional(v.string()),
+    ageRestriction: v.optional(v.string()),
+  })
+    .index("by_category", ["category"])
+    .index("by_city", ["city"])
+    .index("by_featured", ["isFeatured"])
+    .index("by_category_city", ["category", "city"]),
   tickets: defineTable({
     eventId: v.id("events"),
     userId: v.string(),

@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
-import { WAITING_LIST_STATUS } from "@/convex/constants";
 import { useMutation, useQuery } from "convex/react";
 import { ConvexError } from "convex/values";
 import { AlertCircle, Clock, OctagonXIcon, Ticket } from "lucide-react";
@@ -41,20 +40,17 @@ export default function JoinQueue({ eventId, userId }: JoinQueueProps) {
   const isEventOwner = userId === event.userId;
   const isSoldOut = availability.purchasedCount >= availability.totalTickets;
 
-  const hasExpiredOrNoQueue =
-    !queuePosition ||
-    queuePosition.status === WAITING_LIST_STATUS.EXPIRED ||
-    (queuePosition.status === WAITING_LIST_STATUS.OFFERED &&
-      queuePosition.offerExpiresAt &&
-      queuePosition.offerExpiresAt <= Date.now());
+  // const hasExpiredOrNoQueue =
+  //   !queuePosition ||
+  //   queuePosition.status === WAITING_LIST_STATUS.EXPIRED ||
+  //   (queuePosition.status === WAITING_LIST_STATUS.OFFERED &&
+  //     queuePosition.offerExpiresAt &&
+  //     queuePosition.offerExpiresAt <= Date.now());
 
   const canShowCard =
     !userTicket &&
-    (!isEventOwner || isSoldOut || isPastEvent || hasExpiredOrNoQueue);
-
-  if (!hasExpiredOrNoQueue) {
-    return null;
-  }
+    !isEventOwner &&
+    !isPastEvent;
 
   // Handler
   const handleJoinQueue = async () => {
@@ -117,13 +113,13 @@ export default function JoinQueue({ eventId, userId }: JoinQueueProps) {
         )}
 
         {/* Button to join waiting list if conditions are met */}
-        {hasExpiredOrNoQueue && !isSoldOut && !isEventOwner && !isPastEvent && (
+        {canShowCard && (
           <Button
             onClick={handleJoinQueue}
-            className="w-full bg-gradient-to-r from-blue-600 to-blue-800 hover:from-blue-700 hover:to-blue-900 text-white font-medium py-3 cursor-pointer"
+            className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold py-3 px-6 rounded-lg transition-colors"
           >
             <Ticket className="w-5 h-5 mr-2" />
-            Buy Ticket
+            {isSoldOut ? "Join Waiting List" : "Buy Ticket"}
           </Button>
         )}
       </CardContent>
