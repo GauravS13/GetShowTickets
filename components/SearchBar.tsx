@@ -2,21 +2,17 @@
 
 import { cn } from "@/lib/utils";
 import { Search, X } from "lucide-react";
+import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import type React from "react";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 
-export default function SearchBar() {
+// Create a client-only version of the SearchBar
+const ClientSearchBar = () => {
   const router = useRouter();
   const [query, setQuery] = useState("");
   const [isFocused, setIsFocused] = useState(false);
-  const [mounted, setMounted] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
-
-  // Set mounted state to true after hydration
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   // Handle search submission
   const handleSearch = (e: React.FormEvent) => {
@@ -47,37 +43,38 @@ export default function SearchBar() {
           placeholder="Search for events, venues, artists..."
           autoComplete="off"
           className={cn(
-            "w-full py-2.5 px-4 pl-11 bg-white rounded-full border transition-all duration-300",
-            "focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent",
-            "placeholder:text-gray-400 text-gray-800",
+            "w-full py-3 px-4 pl-12 bg-background/80 backdrop-blur-sm rounded-full border-2 transition-all duration-300",
+            "focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 focus:shadow-glow focus:shadow-primary/10",
+            "placeholder:text-muted-foreground text-foreground",
             isFocused
-              ? "border-blue-300 shadow-md"
-              : "border-gray-200 shadow-sm hover:border-gray-300"
+              ? "border-primary shadow-glow shadow-primary/10"
+              : "border-border/50 shadow-sm hover:border-primary/40 hover:shadow-md"
           )}
         />
 
-        <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400">
+        <div className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground">
           <Search className="w-5 h-5" />
         </div>
 
-        {/* Only render the clear button on the client side after hydration */}
-        {mounted && query && (
-          <button
-            type="button"
-            onClick={clearSearch}
-            className="absolute right-14 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 p-1 rounded-full hover:bg-gray-100 transition-colors"
-            aria-label="Clear search"
-          >
-            <X className="w-4 h-4" />
-          </button>
-        )}
+        {/* Clear button - always rendered but conditionally visible */}
+        <button
+          type="button"
+          onClick={clearSearch}
+          className={cn(
+            "absolute right-16 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground p-1.5 rounded-full hover:bg-accent/10 transition-all duration-300 hover:scale-110",
+            query ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+          )}
+          aria-label="Clear search"
+        >
+          <X className="w-4 h-4" />
+        </button>
 
         <button
           type="submit"
           className={cn(
-            "absolute right-2 top-1/2 -translate-y-1/2 px-3.5 py-1.5 rounded-full text-sm font-medium transition-all duration-300",
-            "bg-gradient-to-r from-blue-600 to-blue-500 text-white",
-            "hover:from-blue-700 hover:to-blue-600 shadow-sm hover:shadow-md"
+            "absolute right-2 top-1/2 -translate-y-1/2 px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300",
+            "bg-gradient-primary text-primary-foreground",
+            "hover:shadow-glow hover:shadow-primary/25 hover:scale-105 active:scale-95"
           )}
         >
           Search
@@ -85,4 +82,31 @@ export default function SearchBar() {
       </form>
     </div>
   );
+};
+
+// Server-side fallback component
+const ServerSearchBar = () => {
+  return (
+    <div className="relative w-full">
+      <div className="w-full py-3 px-4 pl-12 bg-background/80 backdrop-blur-sm rounded-full border-2 border-border/50 shadow-sm">
+        <div className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground">
+          <Search className="w-5 h-5" />
+        </div>
+        <div className="absolute right-2 top-1/2 -translate-y-1/2 px-4 py-2 rounded-full text-sm font-semibold bg-gradient-primary text-primary-foreground">
+          Search
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// Dynamically import the client component with no SSR
+const DynamicSearchBar = dynamic(() => Promise.resolve(ClientSearchBar), {
+  ssr: false,
+  loading: () => <ServerSearchBar />
+});
+
+// Main SearchBar component
+export default function SearchBar() {
+  return <DynamicSearchBar />;
 }

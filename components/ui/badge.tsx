@@ -1,22 +1,38 @@
-import * as React from "react"
 import { Slot } from "@radix-ui/react-slot"
 import { cva, type VariantProps } from "class-variance-authority"
+import * as React from "react"
 
 import { cn } from "@/lib/utils"
 
 const badgeVariants = cva(
-  "inline-flex items-center justify-center rounded-md border px-2 py-0.5 text-xs font-medium w-fit whitespace-nowrap shrink-0 [&>svg]:size-3 gap-1 [&>svg]:pointer-events-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive transition-[color,box-shadow] overflow-hidden",
+  "inline-flex items-center justify-center rounded-full border px-3 py-1 text-xs font-semibold w-fit whitespace-nowrap shrink-0 [&>svg]:size-3 gap-1.5 [&>svg]:pointer-events-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1 transition-all duration-300 overflow-hidden",
   {
     variants: {
       variant: {
         default:
-          "border-transparent bg-primary text-primary-foreground [a&]:hover:bg-primary/90",
+          "border-transparent bg-gradient-primary text-primary-foreground shadow-sm hover:shadow-glow hover:shadow-primary/25",
         secondary:
-          "border-transparent bg-secondary text-secondary-foreground [a&]:hover:bg-secondary/90",
+          "border-transparent bg-gradient-secondary text-secondary-foreground shadow-sm hover:shadow-glow-secondary hover:shadow-secondary/25",
         destructive:
-          "border-transparent bg-destructive text-white [a&]:hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60",
+          "border-transparent bg-destructive text-white shadow-sm hover:shadow-glow hover:shadow-destructive/25",
         outline:
-          "text-foreground [a&]:hover:bg-accent [a&]:hover:text-accent-foreground",
+          "text-foreground border-border/50 hover:bg-accent/10 hover:text-accent-foreground",
+        purple:
+          "border-transparent bg-purple text-purple-foreground shadow-sm hover:shadow-glow hover:shadow-purple/25",
+        cyan:
+          "border-transparent bg-cyan text-cyan-foreground shadow-sm hover:shadow-glow-secondary hover:shadow-cyan/25",
+        orange:
+          "border-transparent bg-orange text-orange-foreground shadow-sm hover:shadow-glow-accent hover:shadow-orange/25",
+        pink:
+          "border-transparent bg-pink text-pink-foreground shadow-sm hover:shadow-glow hover:shadow-pink/25",
+        gradient:
+          "border-transparent bg-gradient-entertainment text-white shadow-sm hover:shadow-glow hover:shadow-primary/25",
+        glass:
+          "glass-effect text-foreground border-glass-border hover:bg-accent/10",
+        energy:
+          "border-transparent bg-gradient-accent text-accent-foreground shadow-sm hover:shadow-glow-accent hover:shadow-accent/25 energy-pulse",
+        live:
+          "border-transparent bg-gradient-accent text-accent-foreground shadow-sm hover:shadow-glow-accent hover:shadow-accent/25 animate-pulse",
       },
     },
     defaultVariants: {
@@ -44,3 +60,4 @@ function Badge({
 }
 
 export { Badge, badgeVariants }
+

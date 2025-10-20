@@ -25,10 +25,10 @@ export default function Header() {
   return (
     <header
       className={cn(
-        "sticky top-0 z-50 w-full transition-all duration-300",
+        "sticky top-0 z-50 w-full transition-all duration-500",
         scrolled
-          ? "bg-white/90 backdrop-blur-md shadow-sm border-b"
-          : "bg-white border-b"
+          ? "glass-effect shadow-lg border-b border-primary/20"
+          : "bg-background/95 backdrop-blur-sm border-b border-border/50"
       )}
     >
       <div className="container mx-auto px-4 py-3">
@@ -57,13 +57,13 @@ export default function Header() {
             <SignedIn>
               <div className="flex items-center gap-4">
                 <Link href="/seller">
-                  <button className="bg-gradient-to-r from-blue-600 to-blue-500 text-white px-4 py-2 rounded-full text-sm font-medium hover:from-blue-700 hover:to-blue-600 transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
+                  <button className="bg-gradient-primary text-primary-foreground px-6 py-2.5 rounded-full text-sm font-semibold hover:shadow-glow hover:shadow-primary/25 transition-all duration-300 hover:scale-105 active:scale-95">
                     Sell Tickets
                   </button>
                 </Link>
 
                 <Link href="/tickets">
-                  <button className="bg-white text-gray-800 px-4 py-2 rounded-full text-sm font-medium border border-gray-200 hover:bg-gray-50 transition-all duration-300 shadow-sm hover:shadow-md transform hover:-translate-y-0.5">
+                  <button className="glass-effect text-foreground px-6 py-2.5 rounded-full text-sm font-semibold hover:bg-accent/10 hover:shadow-glow hover:shadow-primary/10 transition-all duration-300 hover:scale-105 active:scale-95">
                     My Tickets
                   </button>
                 </Link>
@@ -73,7 +73,7 @@ export default function Header() {
                     appearance={{
                       elements: {
                         avatarBox:
-                          "h-9 w-9 rounded-full ring-2 ring-blue-100 hover:ring-blue-200 transition-all",
+                          "h-10 w-10 rounded-full ring-2 ring-primary/20 hover:ring-primary/40 transition-all duration-300 hover:scale-105",
                       },
                     }}
                   />
@@ -83,7 +83,7 @@ export default function Header() {
 
             <SignedOut>
               <SignInButton mode="modal">
-                <button className="bg-white text-gray-800 px-5 py-2 rounded-full text-sm font-medium border border-gray-200 hover:bg-gray-50 transition-all duration-300 shadow-sm hover:shadow-md transform hover:-translate-y-0.5">
+                <button className="glass-effect text-foreground px-6 py-2.5 rounded-full text-sm font-semibold hover:bg-accent/10 hover:shadow-glow hover:shadow-primary/10 transition-all duration-300 hover:scale-105 active:scale-95">
                   Sign In
                 </button>
               </SignInButton>
@@ -96,7 +96,7 @@ export default function Header() {
               <UserButton
                 appearance={{
                   elements: {
-                    avatarBox: "h-8 w-8 rounded-full ring-2 ring-blue-100",
+                    avatarBox: "h-9 w-9 rounded-full ring-2 ring-primary/20 hover:ring-primary/40 transition-all duration-300",
                   },
                 }}
               />
@@ -104,7 +104,7 @@ export default function Header() {
 
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="p-2 rounded-full bg-gray-50 text-gray-700 hover:bg-gray-100 transition-colors"
+              className="p-2.5 rounded-full glass-effect text-foreground hover:bg-accent/10 hover:shadow-glow hover:shadow-primary/10 transition-all duration-300 hover:scale-105 active:scale-95"
               aria-label="Toggle menu"
             >
               {isMenuOpen ? <X size={20} /> : <Menu size={20} />}
@@ -120,18 +120,18 @@ export default function Header() {
 
       {/* Mobile Menu */}
       {isMenuOpen && (
-        <div className="lg:hidden absolute top-full left-0 right-0 bg-white border-b shadow-lg animate-in slide-in-from-top duration-300">
-          <div className="container mx-auto px-4 py-4 flex flex-col gap-3">
+        <div className="lg:hidden absolute top-full left-0 right-0 glass-effect border-b border-primary/20 shadow-lg animate-slide-up">
+          <div className="container mx-auto px-4 py-6 flex flex-col gap-4">
             <SignedIn>
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-2 gap-4">
                 <Link href="/seller" className="col-span-1">
-                  <button className="w-full bg-gradient-to-r from-blue-600 to-blue-500 text-white px-4 py-2.5 rounded-xl text-sm font-medium hover:from-blue-700 hover:to-blue-600 transition-all duration-300 shadow-md">
+                  <button className="w-full bg-gradient-primary text-primary-foreground px-4 py-3 rounded-xl text-sm font-semibold hover:shadow-glow hover:shadow-primary/25 transition-all duration-300 hover:scale-105 active:scale-95">
                     Sell Tickets
                   </button>
                 </Link>
 
                 <Link href="/tickets" className="col-span-1">
-                  <button className="w-full bg-white text-gray-800 px-4 py-2.5 rounded-xl text-sm font-medium border border-gray-200 hover:bg-gray-50 transition-all duration-300 shadow-sm">
+                  <button className="w-full glass-effect text-foreground px-4 py-3 rounded-xl text-sm font-semibold hover:bg-accent/10 hover:shadow-glow hover:shadow-primary/10 transition-all duration-300 hover:scale-105 active:scale-95">
                     My Tickets
                   </button>
                 </Link>
@@ -140,29 +140,29 @@ export default function Header() {
 
             <SignedOut>
               <SignInButton mode="modal">
-                <button className="w-full bg-gradient-to-r from-blue-600 to-blue-500 text-white px-4 py-2.5 rounded-xl text-sm font-medium hover:from-blue-700 hover:to-blue-600 transition-all duration-300 shadow-md">
+                <button className="w-full bg-gradient-primary text-primary-foreground px-4 py-3 rounded-xl text-sm font-semibold hover:shadow-glow hover:shadow-primary/25 transition-all duration-300 hover:scale-105 active:scale-95">
                   Sign In
                 </button>
               </SignInButton>
             </SignedOut>
 
-            <div className="pt-2 border-t mt-2">
-              <nav className="flex flex-col gap-2">
+            <div className="pt-4 border-t border-border/50 mt-2">
+              <nav className="flex flex-col gap-3">
                 <Link
                   href="/events"
-                  className="text-gray-700 hover:text-blue-600 py-2 transition-colors"
+                  className="text-muted-foreground hover:text-primary py-2 transition-colors duration-300 hover:translate-x-1"
                 >
                   All Events
                 </Link>
                 <Link
                   href="/categories"
-                  className="text-gray-700 hover:text-blue-600 py-2 transition-colors"
+                  className="text-muted-foreground hover:text-primary py-2 transition-colors duration-300 hover:translate-x-1"
                 >
                   Categories
                 </Link>
                 <Link
                   href="/help"
-                  className="text-gray-700 hover:text-blue-600 py-2 transition-colors"
+                  className="text-muted-foreground hover:text-primary py-2 transition-colors duration-300 hover:translate-x-1"
                 >
                   Help & Support
                 </Link>
