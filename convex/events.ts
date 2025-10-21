@@ -478,6 +478,135 @@ export const search = query({
   },
 });
 
+export const searchWithAvailability = query({
+  args: { searchTerm: v.string(), userId: v.optional(v.string()) },
+  handler: async (ctx, { searchTerm, userId }) => {
+    const events = await ctx.db
+      .query("events")
+      .filter((q) => q.eq(q.field("is_cancelled"), undefined))
+      .collect();
+
+    const filteredEvents = events.filter((event) => {
+      const searchTermLower = searchTerm.toLowerCase();
+      return (
+        event.name.toLowerCase().includes(searchTermLower) ||
+        event.description.toLowerCase().includes(searchTermLower) ||
+        event.location.toLowerCase().includes(searchTermLower)
+      );
+    });
+
+    // Get user tickets and queue positions if user is authenticated
+    let userTickets: Record<string, any> = {};
+    let userQueuePositions: Record<string, any> = {};
+    
+    if (userId) {
+      const tickets = await ctx.db
+        .query("tickets")
+        .withIndex("by_user", (q) => q.eq("userId", userId))
+        .collect();
+      
+      const queueEntries = await ctx.db
+        .query("waitingList")
+        .withIndex("by_user", (q) => q.eq("userId", userId))
+        .collect();
+
+      // Create lookup maps
+      userTickets = tickets.reduce((acc, ticket) => {
+        acc[ticket.eventId] = ticket;
+        return acc;
+      }, {} as Record<string, any>);
+
+      userQueuePositions = queueEntries.reduce((acc, entry) => {
+        acc[entry.eventId] = entry;
+        return acc;
+      }, {} as Record<string, any>);
+    }
+
+    // Calculate availability for each event
+    const eventsWithAvailability = await Promise.all(
+      filteredEvents.map(async (event) => {
+        let availability;
+
+        if (event.seatingPlanId) {
+          // Seated events: calculate from seating plan
+          const seatingPlan = await ctx.db.get(event.seatingPlanId);
+          if (!seatingPlan) {
+            availability = {
+              isSoldOut: true,
+              totalTickets: 0,
+              purchasedCount: 0,
+              activeOffers: 0,
+              remainingTickets: 0,
+            };
+          } else {
+            const purchasedTickets = await ctx.db
+              .query("tickets")
+              .withIndex("by_event", (q) => q.eq("eventId", event._id))
+              .collect()
+              .then(tickets => tickets.filter(t => t.status === TICKET_STATUS.VALID || t.status === TICKET_STATUS.USED));
+
+            const totalSeats = seatingPlan.sections.reduce((sum, section) => 
+              sum + section.rows.length * section.seatLabels.length, 0
+            );
+
+            availability = {
+              isSoldOut: purchasedTickets.length >= totalSeats,
+              totalTickets: totalSeats,
+              purchasedCount: purchasedTickets.length,
+              activeOffers: 0, // Seated events don't use waiting list
+              remainingTickets: Math.max(0, totalSeats - purchasedTickets.length),
+            };
+          }
+        } else {
+          // Non-seated events: legacy count by tickets and waiting list offers
+          const purchasedCount = await ctx.db
+            .query("tickets")
+            .withIndex("by_event", (q) => q.eq("eventId", event._id))
+            .collect()
+            .then(
+              (tickets) =>
+                tickets.filter(
+                  (t) =>
+                    t.status === TICKET_STATUS.VALID ||
+                    t.status === TICKET_STATUS.USED
+                ).length
+            );
+
+          const now = Date.now();
+          const activeOffers = await ctx.db
+            .query("waitingList")
+            .withIndex("by_event_status", (q) =>
+              q.eq("eventId", event._id).eq("status", WAITING_LIST_STATUS.OFFERED)
+            )
+            .collect()
+            .then(
+              (entries) => entries.filter((e) => (e.offerExpiresAt ?? 0) > now).length
+            );
+
+          const totalReserved = purchasedCount + activeOffers;
+
+          availability = {
+            isSoldOut: totalReserved >= event.totalTickets,
+            totalTickets: event.totalTickets,
+            purchasedCount,
+            activeOffers,
+            remainingTickets: Math.max(0, event.totalTickets - totalReserved),
+          };
+        }
+
+        return {
+          ...event,
+          availability,
+          userTicket: userTickets[event._id] || null,
+          queuePosition: userQueuePositions[event._id] || null,
+        };
+      })
+    );
+
+    return eventsWithAvailability;
+  },
+});
+
 export const getSellerEvents = query({
   args: { userId: v.string() },
   handler: async (ctx, { userId }) => {
@@ -630,6 +759,128 @@ export const getByCategory = query({
   },
 });
 
+export const getByCategoryWithAvailability = query({
+  args: { category: v.string(), userId: v.optional(v.string()) },
+  handler: async (ctx, { category, userId }) => {
+    // Get events for the category
+    const events = await ctx.db
+      .query("events")
+      .filter((q) => q.eq(q.field("is_cancelled"), undefined))
+      .collect()
+      .then(events => events.filter(event => event.category === category));
+
+    // Get user tickets and queue positions if user is authenticated
+    let userTickets: Record<string, any> = {};
+    let userQueuePositions: Record<string, any> = {};
+    
+    if (userId) {
+      const tickets = await ctx.db
+        .query("tickets")
+        .withIndex("by_user", (q) => q.eq("userId", userId))
+        .collect();
+      
+      const queueEntries = await ctx.db
+        .query("waitingList")
+        .withIndex("by_user", (q) => q.eq("userId", userId))
+        .collect();
+
+      // Create lookup maps
+      userTickets = tickets.reduce((acc, ticket) => {
+        acc[ticket.eventId] = ticket;
+        return acc;
+      }, {} as Record<string, any>);
+
+      userQueuePositions = queueEntries.reduce((acc, entry) => {
+        acc[entry.eventId] = entry;
+        return acc;
+      }, {} as Record<string, any>);
+    }
+
+    // Calculate availability for each event
+    const eventsWithAvailability = await Promise.all(
+      events.map(async (event) => {
+        let availability;
+
+        if (event.seatingPlanId) {
+          // Seated events: calculate from seating plan
+          const seatingPlan = await ctx.db.get(event.seatingPlanId);
+          if (!seatingPlan) {
+            availability = {
+              isSoldOut: true,
+              totalTickets: 0,
+              purchasedCount: 0,
+              activeOffers: 0,
+              remainingTickets: 0,
+            };
+          } else {
+            const purchasedTickets = await ctx.db
+              .query("tickets")
+              .withIndex("by_event", (q) => q.eq("eventId", event._id))
+              .collect()
+              .then(tickets => tickets.filter(t => t.status === TICKET_STATUS.VALID || t.status === TICKET_STATUS.USED));
+
+            const totalSeats = seatingPlan.sections.reduce((sum, section) => 
+              sum + section.rows.length * section.seatLabels.length, 0
+            );
+
+            availability = {
+              isSoldOut: purchasedTickets.length >= totalSeats,
+              totalTickets: totalSeats,
+              purchasedCount: purchasedTickets.length,
+              activeOffers: 0, // Seated events don't use waiting list
+              remainingTickets: Math.max(0, totalSeats - purchasedTickets.length),
+            };
+          }
+        } else {
+          // Non-seated events: legacy count by tickets and waiting list offers
+          const purchasedCount = await ctx.db
+            .query("tickets")
+            .withIndex("by_event", (q) => q.eq("eventId", event._id))
+            .collect()
+            .then(
+              (tickets) =>
+                tickets.filter(
+                  (t) =>
+                    t.status === TICKET_STATUS.VALID ||
+                    t.status === TICKET_STATUS.USED
+                ).length
+            );
+
+          const now = Date.now();
+          const activeOffers = await ctx.db
+            .query("waitingList")
+            .withIndex("by_event_status", (q) =>
+              q.eq("eventId", event._id).eq("status", WAITING_LIST_STATUS.OFFERED)
+            )
+            .collect()
+            .then(
+              (entries) => entries.filter((e) => (e.offerExpiresAt ?? 0) > now).length
+            );
+
+          const totalReserved = purchasedCount + activeOffers;
+
+          availability = {
+            isSoldOut: totalReserved >= event.totalTickets,
+            totalTickets: event.totalTickets,
+            purchasedCount,
+            activeOffers,
+            remainingTickets: Math.max(0, event.totalTickets - totalReserved),
+          };
+        }
+
+        return {
+          ...event,
+          availability,
+          userTicket: userTickets[event._id] || null,
+          queuePosition: userQueuePositions[event._id] || null,
+        };
+      })
+    );
+
+    return eventsWithAvailability;
+  },
+});
+
 export const getByLocation = query({
   args: { city: v.string() },
   handler: async (ctx, { city }) => {
@@ -638,6 +889,128 @@ export const getByLocation = query({
       .filter((q) => q.eq(q.field("is_cancelled"), undefined))
       .collect()
       .then(events => events.filter(event => event.city === city));
+  },
+});
+
+export const getByLocationWithAvailability = query({
+  args: { city: v.string(), userId: v.optional(v.string()) },
+  handler: async (ctx, { city, userId }) => {
+    // Get events for the location
+    const events = await ctx.db
+      .query("events")
+      .filter((q) => q.eq(q.field("is_cancelled"), undefined))
+      .collect()
+      .then(events => events.filter(event => event.city === city));
+
+    // Get user tickets and queue positions if user is authenticated
+    let userTickets: Record<string, any> = {};
+    let userQueuePositions: Record<string, any> = {};
+    
+    if (userId) {
+      const tickets = await ctx.db
+        .query("tickets")
+        .withIndex("by_user", (q) => q.eq("userId", userId))
+        .collect();
+      
+      const queueEntries = await ctx.db
+        .query("waitingList")
+        .withIndex("by_user", (q) => q.eq("userId", userId))
+        .collect();
+
+      // Create lookup maps
+      userTickets = tickets.reduce((acc, ticket) => {
+        acc[ticket.eventId] = ticket;
+        return acc;
+      }, {} as Record<string, any>);
+
+      userQueuePositions = queueEntries.reduce((acc, entry) => {
+        acc[entry.eventId] = entry;
+        return acc;
+      }, {} as Record<string, any>);
+    }
+
+    // Calculate availability for each event
+    const eventsWithAvailability = await Promise.all(
+      events.map(async (event) => {
+        let availability;
+
+        if (event.seatingPlanId) {
+          // Seated events: calculate from seating plan
+          const seatingPlan = await ctx.db.get(event.seatingPlanId);
+          if (!seatingPlan) {
+            availability = {
+              isSoldOut: true,
+              totalTickets: 0,
+              purchasedCount: 0,
+              activeOffers: 0,
+              remainingTickets: 0,
+            };
+          } else {
+            const purchasedTickets = await ctx.db
+              .query("tickets")
+              .withIndex("by_event", (q) => q.eq("eventId", event._id))
+              .collect()
+              .then(tickets => tickets.filter(t => t.status === TICKET_STATUS.VALID || t.status === TICKET_STATUS.USED));
+
+            const totalSeats = seatingPlan.sections.reduce((sum, section) => 
+              sum + section.rows.length * section.seatLabels.length, 0
+            );
+
+            availability = {
+              isSoldOut: purchasedTickets.length >= totalSeats,
+              totalTickets: totalSeats,
+              purchasedCount: purchasedTickets.length,
+              activeOffers: 0, // Seated events don't use waiting list
+              remainingTickets: Math.max(0, totalSeats - purchasedTickets.length),
+            };
+          }
+        } else {
+          // Non-seated events: legacy count by tickets and waiting list offers
+          const purchasedCount = await ctx.db
+            .query("tickets")
+            .withIndex("by_event", (q) => q.eq("eventId", event._id))
+            .collect()
+            .then(
+              (tickets) =>
+                tickets.filter(
+                  (t) =>
+                    t.status === TICKET_STATUS.VALID ||
+                    t.status === TICKET_STATUS.USED
+                ).length
+            );
+
+          const now = Date.now();
+          const activeOffers = await ctx.db
+            .query("waitingList")
+            .withIndex("by_event_status", (q) =>
+              q.eq("eventId", event._id).eq("status", WAITING_LIST_STATUS.OFFERED)
+            )
+            .collect()
+            .then(
+              (entries) => entries.filter((e) => (e.offerExpiresAt ?? 0) > now).length
+            );
+
+          const totalReserved = purchasedCount + activeOffers;
+
+          availability = {
+            isSoldOut: totalReserved >= event.totalTickets,
+            totalTickets: event.totalTickets,
+            purchasedCount,
+            activeOffers,
+            remainingTickets: Math.max(0, event.totalTickets - totalReserved),
+          };
+        }
+
+        return {
+          ...event,
+          availability,
+          userTicket: userTickets[event._id] || null,
+          queuePosition: userQueuePositions[event._id] || null,
+        };
+      })
+    );
+
+    return eventsWithAvailability;
   },
 });
 
@@ -863,10 +1236,11 @@ export const getHomePageData = query({
 
     // Group events by category
     const eventsByCategory = eventsWithAvailability.reduce((acc, event) => {
-      if (!acc[event.category]) {
-        acc[event.category] = [];
+      const category = event.category || 'uncategorized';
+      if (!acc[category]) {
+        acc[category] = [];
       }
-      acc[event.category].push(event);
+      acc[category].push(event);
       return acc;
     }, {} as Record<string, any[]>);
 

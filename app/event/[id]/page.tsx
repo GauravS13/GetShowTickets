@@ -46,8 +46,9 @@ export default function EventPage({ params }: EventPageProps) {
   const imageUrl = useStorageUrl(event?.imageStorageId);
   
   // Fetch similar events
-  const similarEvents = useQuery(api.events.getByCategory, { 
-    category: event?.category || "" 
+  const similarEvents = useQuery(api.events.getByCategoryWithAvailability, { 
+    category: event?.category || "",
+    userId: user?.id
   });
 
   // Show loading spinner while data is loading
@@ -284,7 +285,6 @@ export default function EventPage({ params }: EventPageProps) {
               events={similarEvents
                 .filter(similarEvent => similarEvent._id !== eventId)
                 .slice(0, 6)
-                .map(event => ({ _id: event._id }))
               }
               showNavigation={true}
             />

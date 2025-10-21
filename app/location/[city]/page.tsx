@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { api } from "@/convex/_generated/api";
+import { useUser } from "@clerk/nextjs";
 import { useQuery } from "convex/react";
 import { motion } from "framer-motion";
 import { ArrowLeft, Calendar, MapPin, Star } from "lucide-react";
@@ -61,6 +62,7 @@ const CITY_INFO = {
 export default function LocationPage({ params }: LocationPageProps) {
   const resolvedParams = use(params);
   const city = resolvedParams.city as string;
+  const { user } = useUser();
   const [viewMode, setViewMode] = useState<"carousel" | "grid">("carousel");
 
   const cityInfo = CITY_INFO[city as keyof typeof CITY_INFO] || {
@@ -71,7 +73,7 @@ export default function LocationPage({ params }: LocationPageProps) {
   };
 
   // Fetch events
-  const events = useQuery(api.events.getByLocation, { city: cityInfo.name });
+  const events = useQuery(api.events.getByLocationWithAvailability, { city: cityInfo.name, userId: user?.id });
   const cityStats = useQuery(api.events.getAvailableCities);
   const categoryStats = useQuery(api.events.getCategoriesWithCount);
 
@@ -230,8 +232,8 @@ export default function LocationPage({ params }: LocationPageProps) {
                   transition={{ duration: 0.6 }}
                 >
                   {viewMode === "carousel" ? (
-                    <EventCarousel 
-                      events={events.map(event => ({ _id: event._id }))}
+                    <EventCarousel
+                      events={events}
                       showNavigation={true}
                     />
                   ) : (
@@ -261,7 +263,7 @@ export default function LocationPage({ params }: LocationPageProps) {
                   >
                     {viewMode === "carousel" ? (
                       <EventCarousel 
-                        events={categoryEvents.map(event => ({ _id: event._id }))}
+                        events={categoryEvents}
                         showNavigation={true}
                       />
                     ) : (

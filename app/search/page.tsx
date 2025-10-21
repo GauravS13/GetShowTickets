@@ -5,6 +5,7 @@ import EventCarousel from "@/components/EventCarousel";
 import FilterBar from "@/components/FilterBar";
 import { Spinner } from "@/components/ui/spinner";
 import { api } from "@/convex/_generated/api";
+import { useUser } from "@clerk/nextjs";
 import { useQuery } from "convex/react";
 import { motion } from "framer-motion";
 import { Calendar, Search, TrendingUp } from "lucide-react";
@@ -14,9 +15,10 @@ import { useMemo, useState } from "react";
 export default function SearchPage() {
   const searchParams = useSearchParams();
   const query = searchParams.get("q") || "";
+  const { user } = useUser();
   const [viewMode, setViewMode] = useState<"carousel" | "grid">("grid");
   
-  const searchResults = useQuery(api.events.search, { searchTerm: query });
+  const searchResults = useQuery(api.events.searchWithAvailability, { searchTerm: query, userId: user?.id });
   const categories = useQuery(api.events.getCategoriesWithCount);
 
   // Group results by category
@@ -156,8 +158,8 @@ export default function SearchPage() {
                 </div>
 
                 {viewMode === "carousel" ? (
-                  <EventCarousel 
-                    events={events.map(event => ({ _id: event._id }))}
+                  <EventCarousel
+                    events={events}
                     showNavigation={true}
                   />
                 ) : (

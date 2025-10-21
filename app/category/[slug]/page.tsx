@@ -7,6 +7,7 @@ import LocationSelector from "@/components/LocationSelector";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
 import { api } from "@/convex/_generated/api";
+import { useUser } from "@clerk/nextjs";
 import { useQuery } from "convex/react";
 import { motion } from "framer-motion";
 import { ArrowLeft, Calendar, MapPin, Star } from "lucide-react";
@@ -54,6 +55,7 @@ const CATEGORY_INFO = {
 export default function CategoryPage({ params }: CategoryPageProps) {
   const resolvedParams = use(params);
   const category = resolvedParams.slug as string;
+  const { user } = useUser();
   const [selectedCity, setSelectedCity] = useState("All Cities");
   const [viewMode, setViewMode] = useState<"carousel" | "grid">("carousel");
 
@@ -65,7 +67,7 @@ export default function CategoryPage({ params }: CategoryPageProps) {
   };
 
   // Fetch events
-  const events = useQuery(api.events.getByCategory, { category });
+  const events = useQuery(api.events.getByCategoryWithAvailability, { category, userId: user?.id });
   const categoryStats = useQuery(api.events.getCategoriesWithCount);
   const cityStats = useQuery(api.events.getAvailableCities);
 
@@ -216,7 +218,7 @@ export default function CategoryPage({ params }: CategoryPageProps) {
 
               {viewMode === "carousel" ? (
                 <EventCarousel 
-                  events={upcomingEvents.map(event => ({ _id: event._id }))}
+                  events={upcomingEvents}
                   showNavigation={true}
                 />
               ) : (
@@ -249,8 +251,8 @@ export default function CategoryPage({ params }: CategoryPageProps) {
                 </div>
 
                 {viewMode === "carousel" ? (
-                  <EventCarousel 
-                    events={pastEvents.map(event => ({ _id: event._id }))}
+                  <EventCarousel
+                    events={pastEvents}
                     showNavigation={true}
                   />
                 ) : (

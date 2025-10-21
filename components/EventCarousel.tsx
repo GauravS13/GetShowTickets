@@ -1,11 +1,12 @@
 "use client";
 
+import { EventWithAvailability } from "@/types/event";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import EventCardCompact from "./EventCardCompact";
 
 interface EventCarouselProps {
-  events: Array<any>; // Full event objects with availability data
+  events: EventWithAvailability[]; // Full event objects with availability data
   title?: string;
   showNavigation?: boolean;
   className?: string;

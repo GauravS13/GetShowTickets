@@ -23,8 +23,10 @@ import {
     CardTitle,
 } from "@/components/ui/card";
 
+import { EventWithAvailability } from "@/types/event";
+
 // Compact Event Card component for carousels
-export default function EventCardCompact({ event }: { event: any }) {
+export default function EventCardCompact({ event }: { event: EventWithAvailability }) {
   const { user } = useUser();
   const router = useRouter();
 

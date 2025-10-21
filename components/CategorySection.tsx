@@ -1,10 +1,11 @@
 "use client";
 
+import { EventWithAvailability } from "@/types/event";
 import Link from "next/link";
 import EventCarousel from "./EventCarousel";
 
 interface CategorySectionProps {
-  events: any[]; // Events with availability data
+  events: EventWithAvailability[]; // Events with availability data
   title: string;
   limit?: number;
   showViewAll?: boolean;
