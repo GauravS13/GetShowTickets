@@ -1,11 +1,7 @@
 "use client";
 
-import { api } from "@/convex/_generated/api";
-import { Id } from "@/convex/_generated/dataModel";
 import { useStorageUrl } from "@/lib/utils";
 import { useUser } from "@clerk/nextjs";
-import { useQuery } from "convex/react";
-import { motion } from "framer-motion";
 import {
     CalendarDays,
     Check,
@@ -28,35 +24,13 @@ import {
 } from "@/components/ui/card";
 
 // Compact Event Card component for carousels
-export default function EventCardCompact({ eventId }: { eventId: Id<"events"> }) {
+export default function EventCardCompact({ event }: { event: any }) {
   const { user } = useUser();
   const router = useRouter();
 
-  // Load data using Convex queries
-  const event = useQuery(api.events.getById, { eventId });
-  const availability = useQuery(api.events.getEventAvailability, { eventId });
-  const userTicket = useQuery(api.tickets.getUserTicketForEvent, {
-    eventId,
-    userId: user?.id ?? "",
-  });
-  const queuePosition = useQuery(api.waitingList.getQueuePosition, {
-    eventId,
-    userId: user?.id ?? "",
-  });
+  // Extract data from the passed event object (no additional queries needed)
+  const { availability, userTicket, queuePosition } = event;
   const imageUrl = useStorageUrl(event?.imageStorageId);
-
-  if (!event || !availability) {
-    return (
-      <Card className="w-80 h-96 glass-effect animate-pulse">
-        <CardHeader className="h-48 bg-muted/20 rounded-t-xl" />
-        <CardContent className="p-4 space-y-3">
-          <div className="h-4 bg-muted/20 rounded w-3/4" />
-          <div className="h-3 bg-muted/20 rounded w-1/2" />
-          <div className="h-3 bg-muted/20 rounded w-2/3" />
-        </CardContent>
-      </Card>
-    );
-  }
 
   const isPastEvent = event.eventDate < Date.now();
   const isEventOwner = user?.id === event?.userId;
@@ -86,7 +60,7 @@ export default function EventCardCompact({ eventId }: { eventId: Id<"events"> })
     }
 
     if (queuePosition?.status === "offered") {
-      return <PurchaseTicket eventId={eventId} />;
+      return <PurchaseTicket eventId={event._id} />;
     }
 
     if (queuePosition?.status === "waiting") {
@@ -115,23 +89,11 @@ export default function EventCardCompact({ eventId }: { eventId: Id<"events"> })
   };
 
   return (
-    <motion.div
-      whileHover={{ 
-        scale: 1.01,
-        y: -2,
-      }}
-      whileTap={{ scale: 0.99 }}
-      transition={{ 
-        type: "spring", 
-        stiffness: 400, 
-        damping: 40,
-        mass: 0.8 
-      }}
-    >
+    <div className="group">
       <Card
         variant={isPastEvent ? "default" : "perspective"}
-        onClick={() => router.push(`/event/${eventId}`)}
-        className={`cursor-pointer transition-all duration-200 w-64 sm:w-72 lg:w-80 min-h-[320px] flex flex-col flex-shrink-0 ${
+        onClick={() => router.push(`/event/${event._id}`)}
+        className={`cursor-pointer transition-all duration-200 w-64 sm:w-72 lg:w-80 min-h-[320px] flex flex-col flex-shrink-0 hover:scale-[1.02] hover:-translate-y-1 ${
           isPastEvent ? "opacity-75 hover:opacity-100" : ""
         }`}
       >
@@ -143,7 +105,9 @@ export default function EventCardCompact({ eventId }: { eventId: Id<"events"> })
                 alt={event.name}
                 fill
                 className="object-cover transition-transform duration-300"
-                priority
+                loading="lazy"
+                sizes="(max-width: 640px) 256px, (max-width: 1024px) 288px, 320px"
+                quality={75}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
             </div>
@@ -220,6 +184,6 @@ export default function EventCardCompact({ eventId }: { eventId: Id<"events"> })
           {renderTicketStatus()}
         </CardFooter>
       </Card>
-    </motion.div>
+    </div>
   );
 }

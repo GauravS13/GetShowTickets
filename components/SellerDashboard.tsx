@@ -8,15 +8,15 @@ import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 
-import { CalendarDays, Plus, UserCheck } from "lucide-react";
+import { CalendarDays, MapPin, Plus, UserCheck } from "lucide-react";
 import { Spinner } from "./ui/spinner";
 
 export default function SellerDashboard() {
@@ -84,6 +84,14 @@ export default function SellerDashboard() {
                     className="flex items-center justify-center gap-2"
                   >
                     <CalendarDays className="w-4 h-4" /> View My Events
+                  </Link>
+                </Button>
+                <Button variant="outline" asChild size="sm" className="flex-1">
+                  <Link
+                    href="/seller/venues"
+                    className="flex items-center justify-center gap-2"
+                  >
+                    <MapPin className="w-4 h-4" /> Manage Venues
                   </Link>
                 </Button>
               </div>

@@ -2,10 +2,10 @@ import { v } from "convex/values";
 import { internal } from "./_generated/api";
 import { Id } from "./_generated/dataModel";
 import {
-  internalMutation,
-  mutation,
-  MutationCtx,
-  query,
+    internalMutation,
+    mutation,
+    MutationCtx,
+    query,
 } from "./_generated/server";
 import { DURATIONS, TICKET_STATUS, WAITING_LIST_STATUS } from "./constants";
 
@@ -63,29 +63,37 @@ export const processQueue = async (ctx: MutationCtx, eventId: Id<"events">) => {
 
   const now = Date.now();
 
-  // Count purchased tickets
-  const tickets = await ctx.db
-    .query("tickets")
-    .withIndex("by_event", (q) => q.eq("eventId", eventId))
-    .collect();
+  let availableSpots = 0;
+  if (event.seatingPlanId) {
+    // Seated events: seats with status available
+    const allSeats = await ctx.db
+      .query("seats")
+      .withIndex("by_event", (q) => q.eq("eventId", eventId))
+      .collect();
+    const soldSeats = allSeats.filter((s) => s.status === "sold").length;
+    const heldSeats = allSeats.filter((s) => s.status === "held" && (s.holdExpiresAt ?? 0) > now).length;
+    const totalSeats = allSeats.length;
+    availableSpots = Math.max(0, totalSeats - (soldSeats + heldSeats));
+  } else {
+    // Non-seated: tickets vs offers
+    const tickets = await ctx.db
+      .query("tickets")
+      .withIndex("by_event", (q) => q.eq("eventId", eventId))
+      .collect();
+    const purchasedCount = tickets.filter(
+      (t) => t.status === TICKET_STATUS.VALID || t.status === TICKET_STATUS.USED
+    ).length;
 
-  const purchasedCount = tickets.filter(
-    (t) => t.status === TICKET_STATUS.VALID || t.status === TICKET_STATUS.USED
-  ).length;
+    const offers = await ctx.db
+      .query("waitingList")
+      .withIndex("by_event_status", (q) =>
+        q.eq("eventId", eventId).eq("status", WAITING_LIST_STATUS.OFFERED)
+      )
+      .collect();
+    const activeOffers = offers.filter((o) => (o.offerExpiresAt ?? 0) > now).length;
+    availableSpots = Math.max(0, event.totalTickets - (purchasedCount + activeOffers));
+  }
 
-  // Count active offers
-  const offers = await ctx.db
-    .query("waitingList")
-    .withIndex("by_event_status", (q) =>
-      q.eq("eventId", eventId).eq("status", WAITING_LIST_STATUS.OFFERED)
-    )
-    .collect();
-
-  const activeOffers = offers.filter(
-    (o) => (o.offerExpiresAt ?? 0) > now
-  ).length;
-
-  const availableSpots = event.totalTickets - (purchasedCount + activeOffers);
   if (availableSpots <= 0) return;
 
   // Get next users in line

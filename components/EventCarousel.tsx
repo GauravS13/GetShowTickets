@@ -1,12 +1,11 @@
 "use client";
 
-import { Id } from "@/convex/_generated/dataModel";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import EventCardCompact from "./EventCardCompact";
 
 interface EventCarouselProps {
-  events: Array<{ _id: Id<"events"> }>;
+  events: Array<any>; // Full event objects with availability data
   title?: string;
   showNavigation?: boolean;
   className?: string;
@@ -166,7 +165,7 @@ export default function EventCarousel({
               key={event._id}
               className="flex-shrink-0 w-64 sm:w-72 lg:w-80"
             >
-              <EventCardCompact eventId={event._id} />
+              <EventCardCompact event={event} />
             </div>
           ))}
         </div>

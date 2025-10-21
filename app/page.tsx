@@ -2,18 +2,55 @@
 
 import CategorySection from "@/components/CategorySection";
 import { api } from "@/convex/_generated/api";
+import { useUser } from "@clerk/nextjs";
 import { useQuery } from "convex/react";
 
 export default function Home() {
+  const { user } = useUser();
   
-  // Fetch data
-  const featuredEvents = useQuery(api.events.getFeaturedEvents);
-  const comedyEvents = useQuery(api.events.getByCategory, { category: "comedy" });
-  const musicEvents = useQuery(api.events.getByCategory, { category: "music" });
-  const sportsEvents = useQuery(api.events.getByCategory, { category: "sports" });
-  const theaterEvents = useQuery(api.events.getByCategory, { category: "theater" });
-  const activitiesEvents = useQuery(api.events.getByCategory, { category: "activities" });
+  // Single consolidated query for all home page data
+  const homePageData = useQuery(api.events.getHomePageData, { 
+    userId: user?.id 
+  });
 
+  // Show loading state for initial render
+  if (!homePageData) {
+    return (
+      <div className="min-h-screen bg-background">
+        {/* Compact Top Section */}
+        <section className="py-6 px-4 sm:px-6 lg:px-8">
+          <div className="max-w-7xl mx-auto">
+            <div className="text-center mb-8">
+              <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-3">
+                Discover Events
+              </h1>
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                Find and book tickets for the most exciting events across India
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* Loading skeleton */}
+        <div className="py-4 px-4 sm:px-6 lg:px-8">
+          <div className="max-w-7xl mx-auto space-y-12">
+            {Array.from({ length: 4 }).map((_, index) => (
+              <div key={index} className="space-y-4">
+                <div className="h-8 w-48 bg-muted/20 rounded animate-pulse" />
+                <div className="flex gap-6">
+                  {Array.from({ length: 3 }).map((_, cardIndex) => (
+                    <div key={cardIndex} className="w-80 h-96 bg-muted/20 rounded-xl animate-pulse" />
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  const { featured, comedy, music, sports, theater, activities } = homePageData;
 
   return (
     <div className="min-h-screen bg-background">
@@ -34,33 +71,35 @@ export default function Home() {
       {/* Category Sections - District.in Style */}
       <div className="py-4 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto space-y-12">
-          {/* Best in Comedy */}
-          {comedyEvents && comedyEvents.length > 0 && (
+          {/* Above the fold - Priority sections */}
+          {/* Best in Comedy - First priority */}
+          {comedy.length > 0 && (
             <section>
               <CategorySection
-                category="comedy"
+                events={comedy}
                 title="Best in Comedy"
                 limit={6}
               />
             </section>
           )}
 
-          {/* India's Top Events */}
-          {featuredEvents && featuredEvents.length > 0 && (
+          {/* India's Top Events - Second priority */}
+          {featured.length > 0 && (
             <section>
               <CategorySection
-                category="featured"
+                events={featured}
                 title="India's Top Events"
                 limit={6}
               />
             </section>
           )}
 
+          {/* Below the fold - Lower priority sections */}
           {/* Music Events */}
-          {musicEvents && musicEvents.length > 0 && (
+          {music.length > 0 && (
             <section>
               <CategorySection
-                category="music"
+                events={music}
                 title="Music Events"
                 limit={6}
               />
@@ -68,10 +107,10 @@ export default function Home() {
           )}
 
           {/* Sports Events */}
-          {sportsEvents && sportsEvents.length > 0 && (
+          {sports.length > 0 && (
             <section>
               <CategorySection
-                category="sports"
+                events={sports}
                 title="Sports Mania"
                 limit={6}
               />
@@ -79,10 +118,10 @@ export default function Home() {
           )}
 
           {/* Theater Events */}
-          {theaterEvents && theaterEvents.length > 0 && (
+          {theater.length > 0 && (
             <section>
               <CategorySection
-                category="theater"
+                events={theater}
                 title="Theater & Shows"
                 limit={6}
               />
@@ -90,24 +129,26 @@ export default function Home() {
           )}
 
           {/* Activities */}
-          {activitiesEvents && activitiesEvents.length > 0 && (
+          {activities.length > 0 && (
             <section>
               <CategorySection
-                category="activities"
+                events={activities}
                 title="Activities & More"
                 limit={6}
               />
             </section>
           )}
 
-          {/* Happening this week */}
-          <section>
-            <CategorySection
-              category="comedy"
-              title="Happening this week"
-              limit={4}
-            />
-          </section>
+          {/* Happening this week - reuse comedy events */}
+          {comedy.length > 0 && (
+            <section>
+              <CategorySection
+                events={comedy}
+                title="Happening this week"
+                limit={4}
+              />
+            </section>
+          )}
         </div>
       </div>
     </div>

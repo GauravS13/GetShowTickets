@@ -1,5 +1,6 @@
 "use client";
 
+import SeatMapSelector from "@/components/SeatMapSelector";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
@@ -30,6 +31,7 @@ interface StickyBookingCardProps {
     eventDate: number;
     location: string;
     userId: string;
+    seatingPlanId?: Id<"seatingPlans">;
   };
 }
 
@@ -75,7 +77,9 @@ export default function StickyBookingCard({ eventId, event }: StickyBookingCardP
 
   const isPastEvent = event.eventDate < Date.now();
   const isEventOwner = user?.id === event.userId;
-  const isSoldOut = availability.purchasedCount >= availability.totalTickets;
+  const isSoldOut = availability.remainingTickets !== undefined
+    ? availability.remainingTickets <= 0
+    : availability.purchasedCount >= availability.totalTickets;
 
   // Don't show booking options for past events
   if (isPastEvent) {
@@ -241,9 +245,9 @@ export default function StickyBookingCard({ eventId, event }: StickyBookingCardP
             {/* Price Display */}
             <div className="text-center">
               <div className="text-3xl font-bold text-foreground">
-                £{event.price.toFixed(2)}
+                ₹{(availability.minPrice ?? event.price).toFixed(0)}
               </div>
-              <div className="text-sm text-muted-foreground">Starts from</div>
+              <div className="text-sm text-muted-foreground">Onwards</div>
             </div>
 
             {/* Event Info */}
@@ -288,7 +292,11 @@ export default function StickyBookingCard({ eventId, event }: StickyBookingCardP
         </CardHeader>
 
         <CardContent className="pt-0">
-          {renderTicketStatus()}
+            {event.seatingPlanId ? (
+              <SeatMapSelector eventId={eventId} />
+            ) : (
+              renderTicketStatus()
+            )}
         </CardContent>
       </Card>
 

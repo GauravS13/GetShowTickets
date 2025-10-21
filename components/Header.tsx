@@ -3,7 +3,6 @@
 import { cn } from "@/lib/utils";
 import logo from "@/public/logo.svg";
 import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
-import { AnimatePresence, motion } from "framer-motion";
 import { Calendar, Gamepad2, Menu, Music, Theater, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -26,10 +25,7 @@ export default function Header() {
   }, []);
 
   return (
-    <motion.header
-      initial={{ y: -50, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.4, ease: "easeOut" }}
+    <header
       className={cn(
         "sticky top-0 z-50 w-full transition-all duration-300",
         scrolled
@@ -137,29 +133,11 @@ export default function Header() {
               className="p-2 rounded-full text-foreground hover:bg-muted/50 transition-colors duration-200 cursor-pointer"
               aria-label="Toggle menu"
             >
-              <AnimatePresence mode="wait">
-                {isMenuOpen ? (
-                  <motion.div
-                    key="close"
-                    initial={{ rotate: -90, opacity: 0 }}
-                    animate={{ rotate: 0, opacity: 1 }}
-                    exit={{ rotate: 90, opacity: 0 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <X size={20} />
-                  </motion.div>
-                ) : (
-                  <motion.div
-                    key="menu"
-                    initial={{ rotate: 90, opacity: 0 }}
-                    animate={{ rotate: 0, opacity: 1 }}
-                    exit={{ rotate: -90, opacity: 0 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <Menu size={20} />
-                  </motion.div>
-                )}
-              </AnimatePresence>
+              {isMenuOpen ? (
+                <X size={20} className="transition-transform duration-200" />
+              ) : (
+                <Menu size={20} className="transition-transform duration-200" />
+              )}
             </button>
           </div>
         </div>
@@ -175,15 +153,8 @@ export default function Header() {
       </div>
 
       {/* Mobile Menu */}
-      <AnimatePresence>
-        {isMenuOpen && (
-          <motion.div 
-            className="lg:hidden absolute top-full left-0 right-0 bg-background/95 backdrop-blur-sm border-b border-border/50"
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.2, ease: "easeOut" }}
-          >
+      {isMenuOpen && (
+        <div className="lg:hidden absolute top-full left-0 right-0 bg-background/95 backdrop-blur-sm border-b border-border/50 transition-all duration-200">
             <div className="container mx-auto px-4 py-4 flex flex-col gap-4">
               <SignedIn>
                 <div className="grid grid-cols-2 gap-3">
@@ -248,9 +219,8 @@ export default function Header() {
                 </nav>
               </div>
             </div>
-          </motion.div>
+          </div>
         )}
-      </AnimatePresence>
-    </motion.header>
+    </header>
   );
 }

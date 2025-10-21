@@ -44,8 +44,37 @@ export const create = mutation({
     language: v.optional(v.string()),
     duration: v.optional(v.string()),
     ageRestriction: v.optional(v.string()),
+    seatingPlanId: v.optional(v.id("seatingPlans")),
+    venueId: v.optional(v.id("venues")),
   },
   handler: async (ctx, args) => {
+    let finalTotalTickets = args.totalTickets;
+
+    // If seating plan is provided, calculate totalTickets from seating plan capacity
+    if (args.seatingPlanId) {
+      const plan = await ctx.db.get(args.seatingPlanId);
+      if (!plan) throw new Error("Seating plan not found");
+      
+      // Calculate total capacity by summing: sections.reduce((sum, s) => sum + (s.rows.length × s.seatLabels.length), 0)
+      const totalCapacity = plan.sections.reduce((sum, section) => {
+        return sum + (section.rows.length * section.seatLabels.length);
+      }, 0);
+      
+      finalTotalTickets = totalCapacity;
+    }
+
+    // Validate tags array (max 10 tags, each max 30 chars)
+    if (args.tags && args.tags.length > 10) {
+      throw new Error("Maximum 10 tags allowed");
+    }
+    if (args.tags) {
+      for (const tag of args.tags) {
+        if (tag.length > 30) {
+          throw new Error("Each tag must be 30 characters or less");
+        }
+      }
+    }
+
     const eventId = await ctx.db.insert("events", {
       name: args.name,
       description: args.description,
@@ -54,13 +83,15 @@ export const create = mutation({
       category: args.category,
       eventDate: args.eventDate,
       price: args.price,
-      totalTickets: args.totalTickets,
+      totalTickets: finalTotalTickets,
       userId: args.userId,
       isFeatured: args.isFeatured || false,
       tags: args.tags || [],
       language: args.language,
       duration: args.duration,
       ageRestriction: args.ageRestriction,
+      seatingPlanId: args.seatingPlanId,
+      venueId: args.venueId,
     });
     return eventId;
   },
@@ -367,7 +398,31 @@ export const getEventAvailability = query({
     const event = await ctx.db.get(eventId);
     if (!event) throw new Error("Event not found");
 
-    // Count total purchased tickets
+    // Seated events: compute from seats table
+    if (event.seatingPlanId) {
+      const allSeats = await ctx.db
+        .query("seats")
+        .withIndex("by_event", (q) => q.eq("eventId", eventId))
+        .collect();
+      const totalSeats = allSeats.length;
+      const soldSeats = allSeats.filter((s) => s.status === "sold").length;
+      const heldSeats = allSeats.filter((s) => s.status === "held" && (s.holdExpiresAt ?? 0) > Date.now()).length;
+      const remainingSeats = Math.max(0, totalSeats - (soldSeats + heldSeats));
+
+      // Compute min price for "onwards"
+      const minPrice = allSeats.reduce((min, s) => Math.min(min, s.price), Number.POSITIVE_INFINITY);
+
+      return {
+        isSoldOut: remainingSeats <= 0,
+        totalTickets: totalSeats,
+        purchasedCount: soldSeats,
+        activeOffers: heldSeats,
+        remainingTickets: remainingSeats,
+        minPrice: Number.isFinite(minPrice) ? minPrice : event.price,
+      };
+    }
+
+    // Non-seated events: legacy count by tickets and waiting list offers
     const purchasedCount = await ctx.db
       .query("tickets")
       .withIndex("by_event", (q) => q.eq("eventId", eventId))
@@ -381,7 +436,6 @@ export const getEventAvailability = query({
           ).length
       );
 
-    // Count current valid offers
     const now = Date.now();
     const activeOffers = await ctx.db
       .query("waitingList")
@@ -478,6 +532,8 @@ export const updateEvent = mutation({
     language: v.optional(v.string()),
     duration: v.optional(v.string()),
     ageRestriction: v.optional(v.string()),
+    seatingPlanId: v.optional(v.id("seatingPlans")),
+    venueId: v.optional(v.id("venues")),
   },
   handler: async (ctx, args) => {
     const { eventId, ...updates } = args;
@@ -485,6 +541,21 @@ export const updateEvent = mutation({
     // Get current event to check tickets sold
     const event = await ctx.db.get(eventId);
     if (!event) throw new Error("Event not found");
+
+    let finalTotalTickets = updates.totalTickets;
+
+    // If seating plan is provided, calculate totalTickets from seating plan capacity
+    if (updates.seatingPlanId) {
+      const plan = await ctx.db.get(updates.seatingPlanId);
+      if (!plan) throw new Error("Seating plan not found");
+      
+      // Calculate total capacity by summing: sections.reduce((sum, s) => sum + (s.rows.length × s.seatLabels.length), 0)
+      const totalCapacity = plan.sections.reduce((sum, section) => {
+        return sum + (section.rows.length * section.seatLabels.length);
+      }, 0);
+      
+      finalTotalTickets = totalCapacity;
+    }
 
     const soldTickets = await ctx.db
       .query("tickets")
@@ -495,13 +566,13 @@ export const updateEvent = mutation({
       .collect();
 
     // Ensure new total tickets is not less than sold tickets
-    if (updates.totalTickets < soldTickets.length) {
+    if (finalTotalTickets < soldTickets.length) {
       throw new Error(
         `Cannot reduce total tickets below ${soldTickets.length} (number of tickets already sold)`
       );
     }
 
-    await ctx.db.patch(eventId, updates);
+    await ctx.db.patch(eventId, { ...updates, totalTickets: finalTotalTickets });
     return eventId;
   },
 });
@@ -679,5 +750,143 @@ export const searchAdvanced = query({
 
       return matchesText && matchesCategory && matchesCity && matchesPrice && matchesDate;
     });
+  },
+});
+
+// Optimized query for home page data - returns all categories with availability in single request
+export const getHomePageData = query({
+  args: { userId: v.optional(v.string()) },
+  handler: async (ctx, { userId }) => {
+    // Get all active events in one query
+    const allEvents = await ctx.db
+      .query("events")
+      .filter((q) => q.eq(q.field("is_cancelled"), undefined))
+      .collect();
+
+    // Get user tickets and queue positions if user is authenticated
+    let userTickets: Record<string, any> = {};
+    let userQueuePositions: Record<string, any> = {};
+    
+    if (userId) {
+      const tickets = await ctx.db
+        .query("tickets")
+        .withIndex("by_user", (q) => q.eq("userId", userId))
+        .collect();
+      
+      const queueEntries = await ctx.db
+        .query("waitingList")
+        .withIndex("by_user", (q) => q.eq("userId", userId))
+        .collect();
+
+      // Create lookup maps
+      userTickets = tickets.reduce((acc, ticket) => {
+        acc[ticket.eventId] = ticket;
+        return acc;
+      }, {} as Record<string, any>);
+
+      userQueuePositions = queueEntries.reduce((acc, entry) => {
+        acc[entry.eventId] = entry;
+        return acc;
+      }, {} as Record<string, any>);
+    }
+
+    // Calculate availability for each event
+    const eventsWithAvailability = await Promise.all(
+      allEvents.map(async (event) => {
+        let availability;
+        
+        if (event.seatingPlanId) {
+          // Seated events: compute from seats table
+          const allSeats = await ctx.db
+            .query("seats")
+            .withIndex("by_event", (q) => q.eq("eventId", event._id))
+            .collect();
+          const totalSeats = allSeats.length;
+          const soldSeats = allSeats.filter((s) => s.status === "sold").length;
+          const heldSeats = allSeats.filter((s) => s.status === "held" && (s.holdExpiresAt ?? 0) > Date.now()).length;
+          const remainingSeats = Math.max(0, totalSeats - (soldSeats + heldSeats));
+          const minPrice = allSeats.reduce((min, s) => Math.min(min, s.price), Number.POSITIVE_INFINITY);
+
+          availability = {
+            isSoldOut: remainingSeats <= 0,
+            totalTickets: totalSeats,
+            purchasedCount: soldSeats,
+            activeOffers: heldSeats,
+            remainingTickets: remainingSeats,
+            minPrice: Number.isFinite(minPrice) ? minPrice : event.price,
+          };
+        } else {
+          // Non-seated events: legacy count by tickets and waiting list offers
+          const purchasedCount = await ctx.db
+            .query("tickets")
+            .withIndex("by_event", (q) => q.eq("eventId", event._id))
+            .collect()
+            .then(
+              (tickets) =>
+                tickets.filter(
+                  (t) =>
+                    t.status === TICKET_STATUS.VALID ||
+                    t.status === TICKET_STATUS.USED
+                ).length
+            );
+
+          const now = Date.now();
+          const activeOffers = await ctx.db
+            .query("waitingList")
+            .withIndex("by_event_status", (q) =>
+              q.eq("eventId", event._id).eq("status", WAITING_LIST_STATUS.OFFERED)
+            )
+            .collect()
+            .then(
+              (entries) => entries.filter((e) => (e.offerExpiresAt ?? 0) > now).length
+            );
+
+          const totalReserved = purchasedCount + activeOffers;
+
+          availability = {
+            isSoldOut: totalReserved >= event.totalTickets,
+            totalTickets: event.totalTickets,
+            purchasedCount,
+            activeOffers,
+            remainingTickets: Math.max(0, event.totalTickets - totalReserved),
+          };
+        }
+
+        return {
+          ...event,
+          availability,
+          userTicket: userTickets[event._id] || null,
+          queuePosition: userQueuePositions[event._id] || null,
+        };
+      })
+    );
+
+    // Group events by category
+    const eventsByCategory = eventsWithAvailability.reduce((acc, event) => {
+      if (!acc[event.category]) {
+        acc[event.category] = [];
+      }
+      acc[event.category].push(event);
+      return acc;
+    }, {} as Record<string, any[]>);
+
+    // Get featured events
+    const featuredEvents = eventsWithAvailability.filter(event => event.isFeatured);
+
+    // Get category counts
+    const categoryCounts = Object.entries(eventsByCategory).map(([category, events]) => ({
+      category,
+      count: events.length,
+    }));
+
+    return {
+      featured: featuredEvents,
+      comedy: eventsByCategory.comedy || [],
+      music: eventsByCategory.music || [],
+      sports: eventsByCategory.sports || [],
+      theater: eventsByCategory.theater || [],
+      activities: eventsByCategory.activities || [],
+      categoryCounts,
+    };
   },
 });

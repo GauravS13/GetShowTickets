@@ -1,12 +1,10 @@
 "use client";
 
-import { api } from "@/convex/_generated/api";
-import { useQuery } from "convex/react";
 import Link from "next/link";
 import EventCarousel from "./EventCarousel";
 
 interface CategorySectionProps {
-  category: string;
+  events: any[]; // Events with availability data
   title: string;
   limit?: number;
   showViewAll?: boolean;
@@ -14,37 +12,12 @@ interface CategorySectionProps {
 }
 
 export default function CategorySection({ 
-  category, 
+  events, 
   title, 
   limit = 6,
   showViewAll = true,
   className = ""
 }: CategorySectionProps) {
-  const events = useQuery(api.events.getByCategory, { category });
-  const categoryCount = useQuery(api.events.getCategoriesWithCount);
-
-  if (!events) {
-    return (
-      <div className={`space-y-6 ${className}`}>
-        <div className="flex items-center justify-between">
-          <div className="space-y-2">
-            <div className="h-8 w-48 bg-muted/20 rounded animate-pulse" />
-            <div className="h-4 w-24 bg-muted/20 rounded animate-pulse" />
-          </div>
-          {showViewAll && (
-            <div className="h-10 w-24 bg-muted/20 rounded animate-pulse" />
-          )}
-        </div>
-        <div className="flex gap-6">
-          {Array.from({ length: 3 }).map((_, index) => (
-            <div key={index} className="w-80 h-96 bg-muted/20 rounded-xl animate-pulse" />
-          ))}
-        </div>
-      </div>
-    );
-  }
-
-  const categoryInfo = categoryCount?.find(c => c.category === category);
   const displayEvents = events.slice(0, limit);
   const hasMoreEvents = events.length > limit;
 
@@ -60,7 +33,7 @@ export default function CategorySection({
         </div>
         
         {showViewAll && hasMoreEvents && (
-          <Link href={`/category/${category}`}>
+          <Link href={`/category/${events[0]?.category || 'events'}`}>
             <button className="text-sm text-muted-foreground hover:text-foreground transition-colors duration-200 cursor-pointer">
               View All
             </button>
@@ -69,16 +42,16 @@ export default function CategorySection({
       </div>
 
       <EventCarousel 
-        events={displayEvents.map(event => ({ _id: event._id }))}
+        events={displayEvents}
         showNavigation={true}
       />
 
       {/* Mobile view all button */}
       {showViewAll && hasMoreEvents && (
         <div className="flex justify-center lg:hidden">
-          <Link href={`/category/${category}`}>
+          <Link href={`/category/${events[0]?.category || 'events'}`}>
             <button className="text-sm text-muted-foreground hover:text-foreground transition-colors duration-200 cursor-pointer">
-              View All {categoryInfo?.count || events.length} Events
+              View All {events.length} Events
             </button>
           </Link>
         </div>
