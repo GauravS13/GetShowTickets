@@ -17,3 +17,25 @@ export const getUserTicketForEvent = query({
     return ticket;
   },
 });
+
+export const getTicketById = query({
+  args: {
+    ticketId: v.id("tickets"),
+  },
+  handler: async (ctx, { ticketId }) => {
+    const ticket = await ctx.db.get(ticketId);
+    if (!ticket) return null;
+
+    const event = await ctx.db.get(ticket.eventId);
+    if (!event) return null;
+
+    // Generate QR code data string
+    const qrData = `TICKET:${ticketId}|EVENT:${ticket.eventId}|USER:${ticket.userId}|DATE:${ticket.purchasedAt}`;
+
+    return {
+      ...ticket,
+      event,
+      qrData,
+    };
+  },
+});

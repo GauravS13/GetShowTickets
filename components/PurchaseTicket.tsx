@@ -1,12 +1,12 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 // import { createStripeCheckoutSession } from "@/app/actions/createStripeCheckoutSession";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
 import { useUser } from "@clerk/nextjs";
-import { useQuery } from "convex/react";
+import { useMutation, useQuery } from "convex/react";
 import { Ticket } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import { Badge } from "@/components/ui/badge";
@@ -23,13 +23,15 @@ import ReleaseTicket from "./ReleaseTicket";
 
 export default function PurchaseTicket({ eventId }: { eventId: Id<"events"> }) {
   const { user } = useUser();
+  const router = useRouter();
+  const purchaseTicket = useMutation(api.events.purchaseTicket);
+  
   const queuePosition = useQuery(api.waitingList.getQueuePosition, {
     eventId,
     userId: user?.id ?? "",
   });
 
   const [timeRemaining, setTimeRemaining] = useState("");
-  // eslint@typescript-eslint/no-unused-vars
   const [isLoading, setIsLoading] = useState(false);
 
   const offerExpiresAt = queuePosition?.offerExpiresAt ?? 0;
@@ -60,21 +62,28 @@ export default function PurchaseTicket({ eventId }: { eventId: Id<"events"> }) {
     return () => clearInterval(interval);
   }, [offerExpiresAt, isExpired]);
 
-  //   const handlePurchase = async () => {
-  //     if (!user) return;
+  const handlePurchase = async () => {
+    if (!user || !queuePosition) return;
 
-  //     try {
-  //       setIsLoading(true);
-  //       const { sessionUrl } = await createStripeCheckoutSession({ eventId });
-  //       if (sessionUrl) {
-  //         router.push(sessionUrl);
-  //       }
-  //     } catch (error) {
-  //       console.error("Error creating checkout session:", error);
-  //     } finally {
-  //       setIsLoading(false);
-  //     }
-  //   };
+    try {
+      setIsLoading(true);
+      const result = await purchaseTicket({
+        eventId,
+        userId: user.id,
+        waitingListId: queuePosition._id,
+        // No paymentInfo for COD-style purchase
+      });
+      
+      if (result.success && result.ticketId) {
+        router.push(`/tickets/${result.ticketId}`);
+      }
+    } catch (error) {
+      console.error("Error purchasing ticket:", error);
+      // You could add a toast notification here for better UX
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   if (!user || !queuePosition || queuePosition.status !== "offered") {
     return null;
@@ -106,12 +115,12 @@ export default function PurchaseTicket({ eventId }: { eventId: Id<"events"> }) {
 
       <CardFooter className="flex flex-col gap-4 p-4">
         <Button
-          //   onClick={handlePurchase}
+          onClick={handlePurchase}
           disabled={isExpired || isLoading}
           className="w-full text-lg font-bold cursor-pointer bg-primary hover:bg-primary/90 text-primary-foreground py-3 px-6 rounded-lg transition-colors"
         >
           {isLoading
-            ? "Redirecting to checkout..."
+            ? "Processing purchase..."
             : "Purchase Your Ticket Now →"}
         </Button>
         <Separator />

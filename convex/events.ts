@@ -265,10 +265,10 @@ export const purchaseTicket = mutation({
     eventId: v.id("events"),
     userId: v.string(),
     waitingListId: v.id("waitingList"),
-    paymentInfo: v.object({
+    paymentInfo: v.optional(v.object({
       paymentIntentId: v.string(),
       amount: v.number(),
-    }),
+    })),
   },
   handler: async (ctx, { eventId, userId, waitingListId, paymentInfo }) => {
     console.log("Starting purchaseTicket handler", {
@@ -319,15 +319,17 @@ export const purchaseTicket = mutation({
 
     try {
       console.log("Creating ticket with payment info", paymentInfo);
-      // Create ticket with payment info
-      await ctx.db.insert("tickets", {
+      // Create ticket with payment info (or COD if no payment info provided)
+      const ticketData = {
         eventId,
         userId,
         purchasedAt: Date.now(),
         status: TICKET_STATUS.VALID,
-        paymentIntentId: paymentInfo.paymentIntentId,
-        amount: paymentInfo.amount,
-      });
+        paymentIntentId: paymentInfo?.paymentIntentId || "COD",
+        amount: paymentInfo?.amount || event.price,
+      };
+      
+      const ticketId = await ctx.db.insert("tickets", ticketData);
 
       console.log("Updating waiting list status to purchased");
       await ctx.db.patch(waitingListId, {
@@ -339,6 +341,7 @@ export const purchaseTicket = mutation({
       // await processQueue(ctx, { eventId });
 
       console.log("Purchase ticket completed successfully");
+      return { success: true, ticketId };
     } catch (error) {
       console.error("Failed to complete ticket purchase:", error);
       throw new Error(`Failed to complete ticket purchase: ${error}`);

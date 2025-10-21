@@ -300,8 +300,8 @@ export default function StickyBookingCard({ eventId, event }: StickyBookingCardP
         </CardContent>
       </Card>
 
-      {/* Join Queue Component - Only show for future events */}
-      {user && !isEventOwner && !isPastEvent && (
+      {/* Join Queue Component - Only show for future events and when no ticket offer is active */}
+      {user && !isEventOwner && !isPastEvent && queuePosition?.status !== "offered" && (
         <div className="mt-4">
           <JoinQueue eventId={eventId} userId={user.id} />
         </div>
